@@ -6,9 +6,10 @@
 #define _PUZZLE_H
 
 // generate a random puzzle
-char *puzzle_generate();
+// ! the caller must free the pointer returned
+char *Puzzle_generate();
 
 // validate if answer_key is correct
-bool puzzle_validate(char *answer_key);
+bool Puzzle_validate(char *problem, int answer);
 
 #endif

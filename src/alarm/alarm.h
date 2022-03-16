@@ -4,21 +4,21 @@
 #define _ALARM_H
 
 // initialie the alarm
-void alarm_init(void);
+void Alarm_init(void);
 
 // make alarm to play sound now
-void alarm_play(void);
+void Alarm_play(void);
 
 // stop the alarm
-void alarm_stop(void);
+void Alarm_stop(void);
 
 // destory the alarm and free all resource it is using
-void alarm_destory(void);
+void Alarm_destory(void);
 
 // schedule the alarm in the future
-void alarm_schedule(char* time);
+void Alarm_schedule(char* time);
 
 // set what content/music the alarm will play
-void alarm_set_content(char* file_path);
+void Alarm_set_content(char* file_path);
 
 #endif
