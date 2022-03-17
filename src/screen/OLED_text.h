@@ -1,8 +1,7 @@
-#ifndef SCREEN_H_
-#define SCREEN_H_
+#ifndef OLED_TEXT_H_
+#define OLED_TEXT_H_
 #include <stdbool.h>
 /*
-    SeeedGrayOLED.cpp
     SSD1327 Gray OLED Driver Library
 
     Copyright (c) 2011 seeed technology inc.
@@ -24,6 +23,8 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+// Modified by Piercson to work with BeagleBone Green and C language
+
 // SeeedGrayOLED Instruction set addresses
 
 #define SH1107G  1
@@ -60,26 +61,25 @@
 
 char addressingMode;
 
-void init(int IC);
+void OLED_text_init(int IC);
+void OLED_text_destroy(void);
 
-void setNormalDisplay();
-void setInverseDisplay();
+void OLED_text_setNormalDisplay(void);
+void OLED_text_setInverseDisplay(void);
 
-void sendCommand(unsigned char command);
-void sendData(unsigned char Data);
-void setGrayLevel(unsigned char grayLevel);
+void OLED_text_setGrayLevel(unsigned char grayLevel);
 
-void setVerticalMode();
-void setHorizontalMode();
+void OLED_text_setVerticalMode(void);
+void OLED_text_setHorizontalMode(void);
 
-void setTextXY(unsigned char Row, unsigned char Column);
-void clearDisplay();
-void setContrastLevel(unsigned char ContrastLevel);
-void putChar(unsigned char c);
-void putString(const char* String);
+void OLED_text_setTextXY(unsigned char Row, unsigned char Column);
+void OLED_text_clearDisplay(void);
+void OLED_text_setContrastLevel(unsigned char ContrastLevel);
+void OLED_text_putChar(unsigned char c);
+void OLED_text_putString(const char* String);
 
-void setHorizontalScrollProperties(bool direction, unsigned char startRow, unsigned char endRow,
+void OLED_text_setHorizontalScrollProperties(bool direction, unsigned char startRow, unsigned char endRow,
                                     unsigned char startColumn, unsigned char endColumn, unsigned char scrollSpeed);
-void activateScroll();
-void deactivateScroll();
+void OLED_text_activateScroll(void);
+void OLED_text_deactivateScroll(void);
 #endif

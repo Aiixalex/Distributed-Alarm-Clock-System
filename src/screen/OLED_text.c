@@ -1,5 +1,5 @@
-// Some of code found from calss website /resources/Fall 2016 Student How-To Guides (for BeagleBone Black)
-// Some code found from ---
+// Some of code found from class website /resources/Fall 2016 Student How-To Guides (for BeagleBone Black)
+// Some code found from https://github.com/Seeed-Studio/OLED_Display_96X96 and Modified by Piercson Thomas
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -8,7 +8,7 @@
 #include <linux/i2c-dev.h>
 #include <linux/i2c.h>
 #include <time.h>
-#include "screen.h"
+#include "OLED_text.h"
 
 #define I2CDRV_LINUX_BUS "/dev/i2c-2"
 #define I2C_DEVICE_ADDRESS 0x3C
@@ -36,7 +36,7 @@ static void sleep_ms(unsigned int delayMs)
 // Function to initalize the I2C device for use
 // char *bus => the I2C device to use, “/dev/i2c-2”
 // int address => the address for the device, 0x3C
-int initI2cBus(char *bus, int address) {
+static int initI2cBus(char *bus, int address) {
     int fd = open(I2CDRV_LINUX_BUS, O_RDWR);
     if(fd < 0) {
     printf("i2c: Unable to open bus for read/write (%s)\n", bus);
@@ -49,9 +49,12 @@ int initI2cBus(char *bus, int address) {
     }
     return fd;
 }
+void OLED_text_destroy(void){
+    close(i2cFileDesc);
+}
 // cmd will be a hex code specifying a command defined in the
 // display’s datasheet
-void sendCommand(unsigned char cmd) {
+static void sendCommand(unsigned char cmd) {
     char buf[2];
     buf[0] = COMMAND_MODE;
     buf[1] = cmd;
@@ -62,8 +65,8 @@ void sendCommand(unsigned char cmd) {
     }
 }
 
-// c will contain the data you wish to display
-void sendData(unsigned char c) {
+// will contain the data you wish to display
+static void sendData(unsigned char c) {
     char buf[2];
     buf[0] = DATA_MODE;
     buf[1] = c;
@@ -73,8 +76,8 @@ void sendData(unsigned char c) {
         exit(-1);
     }
 }
-
-const unsigned char BasicFont[][8] = {
+// Codes
+static const unsigned char BasicFont[][8] = {
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
     {0x00, 0x00, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x00},
     {0x00, 0x00, 0x07, 0x00, 0x07, 0x00, 0x00, 0x00},
@@ -173,7 +176,7 @@ const unsigned char BasicFont[][8] = {
     {0x00, 0x02, 0x05, 0x05, 0x02, 0x00, 0x00, 0x00}
 };
 
-void init(int IC) {
+void OLED_text_init(int IC) {
     i2cFileDesc = initI2cBus(I2CDRV_LINUX_BUS,I2C_DEVICE_ADDRESS);
     Drive_IC = IC;
     if (Drive_IC == SSD1327) {
@@ -248,12 +251,12 @@ void init(int IC) {
     }
 }
 
-void setContrastLevel(unsigned char ContrastLevel) {
+void OLED_text_setContrastLevel(unsigned char ContrastLevel) {
     sendCommand(SeeedGrayOLED_Set_ContrastLevel_Cmd);
     sendCommand(ContrastLevel);
 }
 
-void setHorizontalMode() {
+void OLED_text_setHorizontalMode(void) {
     if (Drive_IC == SSD1327) {
         sendCommand(0xA0); // remap to
         sendCommand(0x42); // horizontal mode
@@ -273,7 +276,7 @@ void setHorizontalMode() {
     }
 }
 
-void setVerticalMode() {
+void OLED_text_setVerticalMode(void) {
     if (Drive_IC == SSD1327) {
         sendCommand(0xA0); // remap to
         sendCommand(0x46); // Vertical mode
@@ -282,8 +285,8 @@ void setVerticalMode() {
         sendCommand(0xC0);
     }
 }
-
-void setTextXY(unsigned char Row, unsigned char Column) {
+// Set text position
+void OLED_text_setTextXY(unsigned char Row, unsigned char Column) {
     if (Drive_IC == SSD1327) {
         //Column Address
         sendCommand(0x15);             /* Set Column Address */
@@ -299,9 +302,19 @@ void setTextXY(unsigned char Row, unsigned char Column) {
         sendCommand(Column & 0x0F);  // set column low 4 byte
     }
 }
-
-void clearDisplay() {
+// Clear display
+void OLED_text_clearDisplay(void) {
     unsigned char i, j;
+    // Row Address
+    sendCommand(0x75); // Set Row Address
+    sendCommand(0x00); // Start 0
+    sendCommand(0x5f); // End 95
+    // Column Address
+    sendCommand(0x15); // Set Column Address
+    sendCommand(0x08); // Start from 8th Column of driver IC.
+    // This is 0th Column for OLED
+    sendCommand(0x37); // End at (8 + 47)th column.
+    // Each Column has 2 pixels(segments)
 
     if (Drive_IC == SSD1327) {
         for (j = 0; j < 48; j++) {
@@ -320,13 +333,13 @@ void clearDisplay() {
         }
     }
 }
-
-void setGrayLevel(unsigned char grayLevel) {
+// Set grey level
+void OLED_text_setGrayLevel(unsigned char grayLevel) {
     grayH = (grayLevel << 4) & 0xF0;
     grayL =  grayLevel & 0x0F;
 }
-
-void putChar(unsigned char C) {
+// Put char on screen
+void OLED_text_putChar(unsigned char C) {
     if (C < 32 || C > 127) { //Ignore non-printable ASCII characters. This can be modified for multilingual font.
         C = ' '; //Space
     }
@@ -352,27 +365,27 @@ void putChar(unsigned char C) {
         }
     }
 }
-
-void putString(const char* String) {
+// Put string on screen
+void OLED_text_putString(const char* String) {
     unsigned char i = 0;
     while (String[i]) {
-        putChar(String[i]);
+        OLED_text_putChar(String[i]);
         i++;
     }
 }
-
-unsigned char putNumber(long long_num) {
+// Put number on Screen
+unsigned char OLED_text_putNumber(long long_num) {
     unsigned char char_buffer[10] = "";
     unsigned char i = 0;
     unsigned char f = 0;
 
     if (long_num < 0) {
         f = 1;
-        putChar('-');
+        OLED_text_putChar('-');
         long_num = -long_num;
     } else if (long_num == 0) {
         f = 1;
-        putChar('0');
+        OLED_text_putChar('0');
         return f;
     }
 
@@ -383,13 +396,13 @@ unsigned char putNumber(long long_num) {
 
     f = f + i;
     for (; i > 0; i--) {
-        putChar('0' + char_buffer[i - 1]);
+        OLED_text_putChar('0' + char_buffer[i - 1]);
     }
     return f;
 
 }
-
-void setHorizontalScrollProperties(bool direction, unsigned char startRow, unsigned char endRow,
+// Set the area of the screen that scrolls
+void OLED_text_setHorizontalScrollProperties(bool direction, unsigned char startRow, unsigned char endRow,
         unsigned char startColumn, unsigned char endColumn, unsigned char scrollSpeed) {
     /*
         Use the following defines for 'direction' :
@@ -427,22 +440,22 @@ void setHorizontalScrollProperties(bool direction, unsigned char startRow, unsig
 
 }
 
-void activateScroll() {
+void OLED_text_activateScroll(void) {
     sendCommand(SeeedGrayOLED_Activate_Scroll_Cmd);
 }
 
-void deactivateScroll() {
+void OLED_text_deactivateScroll(void) {
     sendCommand(SeeedGrayOLED_Dectivate_Scroll_Cmd);
 }
 
-void setNormalDisplay() {
+void OLED_text_setNormalDisplay(void) {
     if (Drive_IC == SSD1327) {
         sendCommand(SeeedGrayOLED_Normal_Display_Cmd);
     } else if (Drive_IC == SH1107G) {
         sendCommand(SeeedGrayOLED_Normal_Display_Cmd_SH1107G);
     }
 }
-
-void setInverseDisplay() {
+// Inverts colors on OLED screen
+void OLED_text_setInverseDisplay(void) {
     sendCommand(SeeedGrayOLED_Inverse_Display_Cmd);
 }
