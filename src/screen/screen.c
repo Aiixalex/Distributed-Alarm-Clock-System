@@ -11,7 +11,7 @@
 #include "screen.h"
 
 #define I2CDRV_LINUX_BUS "/dev/i2c-2"
-#define I2C_DEVICE_ADDRESS 0x3c
+#define I2C_DEVICE_ADDRESS 0x3C
 
 #define COMMAND_MODE 0x80
 #define DATA_MODE 0x40
