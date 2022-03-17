@@ -78,14 +78,19 @@ void *joystickThread()
         switch (joystick_direction)
         {
         case UP:
+            printf("UP\n");
             break;
         case DOWN:
+            printf("DOWN\n");
             break;
         case RIGHT:
+            printf("RIGHT\n");
             break;
         case LEFT:
+            printf("LEFT\n");
             break;
         case IN:
+            printf("IN\n");
             break;
         default:
             break;
