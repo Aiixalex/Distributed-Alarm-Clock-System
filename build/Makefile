@@ -10,7 +10,7 @@ TARGET = main
 VERBOSE = TRUE
 
 # Create the list of directories
-DIRS = joystick
+DIRS = app utils joystick 
 SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SOURCEDIR)/, $(dir)))
 TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BUILDDIR)/, $(dir)))
 

@@ -9,13 +9,12 @@ enum JoystickDirection
     DOWN,
     RIGHT,
     LEFT,
+    IN,
     NO_DIRECTION
 };
 
-// Initilize joystick
-void js_init();
-
-// Get the direction of zen-cape joystick from GPIO
-enum JoystickDirection getJoystickDir();
+// Create/Join the joystick thread.
+void Joystick_init();
+void Joystick_quit();
 
 #endif
