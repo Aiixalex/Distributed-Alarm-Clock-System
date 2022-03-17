@@ -19,9 +19,9 @@
 
 #define MAX_LENGTH 1024
 
-#define JOYSTICK_INTERVAL_US 200000 // 200ms
-#define POOL_INPUT_US 10000 // 10ms
-#define EXPORT_GPIO_LATENCY_US 330000 // 330ms
+#define JOYSTICK_INTERVAL_TIME 200000 // 200ms
+#define POOL_INPUT_TIME 10000 // 10ms
+#define EXPORT_GPIO_LATENCY_TIME 330000 // 330ms
 
 static _Bool stopping = false;
 
@@ -44,7 +44,7 @@ void Joystick_exportAndSetDirectionOfAllGPIOPins()
         }
         closedir(dir);
 
-        usleep(EXPORT_GPIO_LATENCY_US);
+        usleep(EXPORT_GPIO_LATENCY_TIME);
 
         writeToFile(concatStrs(GPIO_DIRPATH, joystick_directions[i], "/direction", buf), "in");
     }
@@ -93,9 +93,9 @@ void *joystickThread()
 
         if (joystick_direction != NO_DIRECTION)
         {
-            usleep(JOYSTICK_INTERVAL_US);
+            usleep(JOYSTICK_INTERVAL_TIME);
         }
-        usleep(POOL_INPUT_US);
+        usleep(POOL_INPUT_TIME);
     }
 
     return NULL;
