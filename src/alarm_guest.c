@@ -6,12 +6,10 @@
 int main() {
     printf("This is alarm_guest\n");
 
-    char *myPuzzle = Puzzle_generate();
-    printf("Puzzle %s\n", myPuzzle);
-
-    printf("Puzzle %d\n", Puzzle_validate(myPuzzle, 28));
-
-    free(myPuzzle);
+    Puzzle_printPuzzle(Puzzle_generate(easy));
+    Puzzle_printPuzzle(Puzzle_generate(medium));
+    Puzzle_printPuzzle(Puzzle_generate(hard));
+    Puzzle_printPuzzle(Puzzle_generate(genius));
 
     return 0;
 }
