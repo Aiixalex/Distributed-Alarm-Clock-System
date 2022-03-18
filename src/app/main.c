@@ -4,7 +4,7 @@
 
 int main() {
     printf("Happy Saint Patrick's Day!\n");
-    void Joystick_init();
-    void Joystick_quit();
+    Joystick_init();
+    Joystick_quit();
     return 0;
 }
