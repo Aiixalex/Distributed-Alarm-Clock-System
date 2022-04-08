@@ -3,7 +3,7 @@
 #define _UTILITY_H_
 
 // export gpio pin
-void export_to_gpio(int gpioNum)
+void export_to_gpio(const char *gpioNum);
 
 // sleep for nanoseconds
 void my_sleep_ns(long nanoseconds);
@@ -12,7 +12,7 @@ void my_sleep_ns(long nanoseconds);
 void my_sleep_ms(long nanoseconds);
 
 // write to a file
-void file_write(char *filename, char *content);
+void file_write(char *filename, const char *content);
 
 // read a int from file
 int file_read_int(char *filename);

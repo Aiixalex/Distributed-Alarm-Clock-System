@@ -11,10 +11,6 @@
 
 static pthread_mutex_t myMutex;
 
-void export_to_gpio(int gpioNum) {
-    file_write(GPIO_EXPORT_PATH, gpioNum);
-}
-
 void my_sleep_ns(long nanoseconds) {
     struct timespec reqDelay = {0, nanoseconds}; 
     nanosleep(&reqDelay, (struct timespec *) NULL);
@@ -25,7 +21,7 @@ void my_sleep_ms(long nanoseconds) {
     nanosleep(&reqDelay, (struct timespec *)NULL);
 }
 
-void file_write(char *filename, char *content)
+void file_write(char *filename, const char *content)
 {
     FILE *myFile = fopen(filename, "w");
     if (myFile == NULL)
@@ -76,4 +72,8 @@ void my_lock_signal_signal() {
 
 void my_lock_signal_destory() {
     pthread_mutex_destroy(&myMutex);
+}
+
+void export_to_gpio(const char *gpioNum) {
+    file_write(GPIO_EXPORT_PATH, gpioNum);
 }
