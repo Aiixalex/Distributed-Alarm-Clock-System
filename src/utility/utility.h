@@ -11,6 +11,9 @@ void my_sleep_ns(long nanoseconds);
 // sleep for miliseconds
 void my_sleep_ms(long nanoseconds);
 
+// sleep for seconds
+void my_sleep_sec(int seconds);
+
 // write to a file
 void file_write(char *filename, const char *content);
 

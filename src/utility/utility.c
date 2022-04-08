@@ -16,6 +16,11 @@ void my_sleep_ns(long nanoseconds) {
     nanosleep(&reqDelay, (struct timespec *) NULL);
 }
 
+void my_sleep_sec(int seconds) {
+    struct timespec reqDelay = {seconds, 0};
+    nanosleep(&reqDelay, (struct timespec *)NULL);
+}
+
 void my_sleep_ms(long nanoseconds) {
     struct timespec reqDelay = {0, nanoseconds * MS_TO_NS_MULTIPLE};
     nanosleep(&reqDelay, (struct timespec *)NULL);

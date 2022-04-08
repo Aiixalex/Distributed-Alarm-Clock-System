@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "utility.h"
+#include "../utility/utility.h"
 #include "keypad.h"
 
 #define GPIO_BASE_DIR "/sys/class/gpio"

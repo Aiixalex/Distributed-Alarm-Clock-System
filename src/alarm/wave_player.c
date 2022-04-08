@@ -1,6 +1,6 @@
 // wave player implementation
 #include "audioMixer.h"
-#include "my_util.h"
+#include "../utility/utility.h"
 #include "wave_player.h"
 #include <stdio.h>
 #include <pthread.h>
@@ -30,25 +30,25 @@ static wavedata_t base_drum, hi_hat, snare;
 static void play_default_beat() {
     AudioMixer_queueSound(&hi_hat);
     AudioMixer_queueSound(&base_drum);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
     AudioMixer_queueSound(&hi_hat);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
     AudioMixer_queueSound(&hi_hat);
     AudioMixer_queueSound(&snare);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
     AudioMixer_queueSound(&hi_hat);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
 }
 
 static void play_beat_2() {
     AudioMixer_queueSound(&base_drum);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
     AudioMixer_queueSound(&base_drum);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
     AudioMixer_queueSound(&hi_hat);
     AudioMixer_queueSound(&snare);
-    my_sleep_ms(0, sleep_time_ms);
-    my_sleep_ms(0, sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
+    my_sleep_ms(sleep_time_ms);
 }
 
 
