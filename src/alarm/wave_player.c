@@ -9,9 +9,6 @@
 // If cross-compiling, must have this file available, via this relative path,
 // on the target when the application is run. This example's Makefile copies the wave-files/
 // folder along with the executable to ensure both are present.
-#define BASE_DRUM "beatbox-wav-files/100051__menegass__gui-drum-bd-hard.wav"
-#define HI_HAT "beatbox-wav-files/100053__menegass__gui-drum-cc.wav"
-#define SNARE "beatbox-wav-files/100059__menegass__gui-drum-snare-soft.wav"
 #define BPM_SLEEP_TIME(x) ((60.0/(x)/2.0)*1000.0)
 #define NUM_MODES 3
 #define VOLUMN_CHANGE_VALUE 5
@@ -25,32 +22,17 @@ static int volumn = 0;
 static int BPM = 120;
 static int sleep_time_ms = BPM_SLEEP_TIME(120);
 static pthread_t threadID;
-static wavedata_t base_drum, hi_hat, snare;
+static wavedata_t alarm_wavedata;
 
-static void play_default_beat() {
-    AudioMixer_queueSound(&hi_hat);
-    AudioMixer_queueSound(&base_drum);
+static void play_alarm() {
+    AudioMixer_queueSound(&alarm_wavedata);
     my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&hi_hat);
+    AudioMixer_queueSound(&alarm_wavedata);
     my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&hi_hat);
-    AudioMixer_queueSound(&snare);
-    my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&hi_hat);
-    my_sleep_ms(sleep_time_ms);
-}
-
-static void play_beat_2() {
-    AudioMixer_queueSound(&base_drum);
-    my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&base_drum);
-    my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&hi_hat);
-    AudioMixer_queueSound(&snare);
+    AudioMixer_queueSound(&alarm_wavedata);
     my_sleep_ms(sleep_time_ms);
     my_sleep_ms(sleep_time_ms);
 }
-
 
 static void *player_thread(void *args) {
 	while (shouldPlay)
@@ -99,34 +81,10 @@ void WavePlayer_playBeat(drum_beats drumBeats) {
     }
 }
 
-void WavePlayer_changeMode(modes modes) {
-    if (myMode != modes) {
-        if (myMode == 0) {
-            myMode = modes;
-            my_lock_signal_signal();
-        } else {
-            myMode = modes;
-        }
-        printf("Mode: %d\n", myMode);
-    }
-}
-
-void WavePlayer_goNextMode() {
-    if (myMode == 0) {
-        myMode = (myMode + 1) % NUM_MODES;
-        my_lock_signal_signal();
-    } else {
-        myMode = (myMode + 1) % NUM_MODES;
-    }
-    printf("Mode: %d\n", myMode);
-}
-
 void WavePlayer_init() {
     AudioMixer_init();
     initialize_my_lock_signal_wait();
     AudioMixer_readWaveFileIntoMemory(BASE_DRUM, &base_drum);
-    AudioMixer_readWaveFileIntoMemory(HI_HAT, &hi_hat);
-    AudioMixer_readWaveFileIntoMemory(SNARE, &snare);
     shouldPlay = true;
     volumn = AudioMixer_getVolume();
     pthread_create(&threadID, NULL, &player_thread, NULL);

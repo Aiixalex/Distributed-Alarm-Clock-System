@@ -3,14 +3,6 @@
 #ifndef _WAVE_PLAYER_H_
 #define _WAVE_PLAYER_H_
 
-typedef enum drum_beats {
-    base_drum_0 = 0, hi_hat_1 = 1, snare_2 = 2
-} drum_beats;
-
-typedef enum modes {
-    none_0 = 0, standard_1 = 1, beatTwo_2 = 2
-} modes;
-
 // initialize the WavePlyer
 void WavePlayer_init(void);
 
