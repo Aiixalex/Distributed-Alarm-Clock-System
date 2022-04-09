@@ -10,12 +10,9 @@ typedef enum displayStyle {
 void Clock_initialize(void);
 
 // display time(Hours) on the display
-void Clock_displayTime(displayStyle myStyle);
+void Clock_setDisplayType(displayStyle myStyle);
 
-// display time(Minutes) on the display
-void Clock_displayTimeMinutes(void);
-
-// display a rectangle on the clock
-void Clock_displayRectangle(void);
+// display a number on the clock
+void Clock_displayNumber(int number);
 
 #endif

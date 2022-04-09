@@ -32,7 +32,7 @@ static int i2cFileDesc;
 static pthread_t displayThreadID;
 static pthread_mutex_t digitsMutex;
 
-static const char bit_pattern[20] = {
+static const char bit_pattern[24] = {
     0xA1, 0x86,
     0x80, 0x12,
     0x31, 0x0e,
@@ -43,12 +43,21 @@ static const char bit_pattern[20] = {
     0x04, 0x14,
     0xb1, 0x8e,
     0x90, 0x8e,
+    0x21, 0x84, // C
+    0xA0, 0x06, // flipped C
 };
 
 void Display_update_number(int number) {
     pthread_mutex_lock(&digitsMutex);
     firstDigit = number / 10;
     secondDigit = number % 10;
+    pthread_mutex_unlock(&digitsMutex);
+}
+
+void Display_show_rectangle(void) {
+    pthread_mutex_lock(&digitsMutex);
+    firstDigit = 10;
+    secondDigit = 11;
     pthread_mutex_unlock(&digitsMutex);
 }
 
@@ -77,7 +86,7 @@ static void writeI2cReg(int i2cFileDesc, unsigned char regAddr, unsigned char va
     }
 }
 
-void display_number(int number) {
+static void display_number(int number) {
     writeI2cReg(i2cFileDesc, REG_OUTA, bit_pattern[number * 2]);
     writeI2cReg(i2cFileDesc, REG_OUTB, bit_pattern[number * 2 + 1]);
 }
@@ -110,14 +119,20 @@ static void *display_thread(void *args) {
 }
 
 void Display_start() {
-    export_to_gpio("64");
+    export_to_gpio("61");
     export_to_gpio("44");
+    my_sleep_ms(300);
     file_write(GPIO_DISPLAY_PATH_1, "out");
     file_write(GPIO_DISPLAY_PATH_2, "out");
+    if (system(SET_PIN_OUTPUT_COMMAND)) {
+        printf("ERROR running %s command\n", SET_PIN_OUTPUT_COMMAND);
+        exit(-1);
+    }
 
     i2cFileDesc = initI2cBus(I2CDRV_LINUX_BUS1, I2C_DEVICE_ADDRESS);
     my_sleep_sec(1);
 
+    printf("i2c display initialized\n");
     pthread_mutex_init(&digitsMutex, NULL);
     pthread_create(&displayThreadID, NULL, &display_thread, NULL);
 }

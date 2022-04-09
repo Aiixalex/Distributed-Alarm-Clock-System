@@ -5,9 +5,14 @@
 #include <pthread.h>
 #include "clock.h"
 #include "i2c_display.h"
+#include "../utility/utility.h"
+
+#define USER_ANSER_DISPLAY_TIME_SEC 2
 
 static pthread_t clockThreadID;
 static displayStyle currentStyle = second;
+static bool displayDigits = false;
+static int digits = 0;
 
 static void *clockThread(void *args) {
     while (true) {
@@ -17,10 +22,14 @@ static void *clockThread(void *args) {
         now = time(NULL);
         now_tm = localtime(&now);
 
-        if (currentStyle == hour)
+        if (displayDigits)
+            Display_update_number(digits);
+        else if (currentStyle == hour)
             Display_update_number(now_tm->tm_hour);
         else if (currentStyle == minute)
             Display_update_number(now_tm->tm_min);
+        else if (currentStyle == rectangle)
+            Display_show_rectangle();
         else
             Display_update_number(now_tm->tm_sec);
     }
@@ -33,6 +42,14 @@ void Clock_initialize(void) {
     pthread_create(&clockThreadID, NULL, &clockThread, NULL);
 }
 
-void Clock_displayTime(displayStyle myStyle) {
+void Clock_setDisplayType(displayStyle myStyle) {
+    displayDigits = false;
     currentStyle = myStyle;
+}
+
+void Clock_displayNumber(int number) {
+    digits = number % 100;
+    displayDigits = true;
+    my_sleep_sec(USER_ANSER_DISPLAY_TIME_SEC);
+    displayDigits = false;
 }

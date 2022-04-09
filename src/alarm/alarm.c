@@ -28,6 +28,9 @@ static void *alarmThread(void *args) {
             if (now_tm->tm_hour >= scheduled_hour 
                 && now_tm->tm_min >= scheduled_minute) {
                 WavePlayer_start();
+                
+                if (myBBGType == host)
+                    my_lock_signal_signal();
 
                 now_tm->tm_mday += 1;
                 time_t tmr = mktime(now_tm);
@@ -44,7 +47,7 @@ static void *alarmThread(void *args) {
 }
 
 static void printAlarmInfo() {
-    if (myBBGType = host)
+    if (myBBGType == host)
         printf("Alarm %s:\n", "host");
     else
         printf("Alarm %s:\n", "guest");
@@ -66,7 +69,13 @@ void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK
     now_tm = localtime(&now);
     scheduled_day = now_tm->tm_mday;
     myBBGType = BBGType;
-    //TODO: display time based on BBG type
+
+    if (BBGType == host) {
+        Clock_setDisplayType(hour);
+    } else if (BBGType == guest) {
+        Clock_setDisplayType(minute);
+    }
+    
     printAlarmInfo();
 
     pthread_create(&threadID, NULL, &alarmThread, NULL);
