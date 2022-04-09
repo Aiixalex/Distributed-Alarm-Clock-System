@@ -10,96 +10,53 @@
 // on the target when the application is run. This example's Makefile copies the wave-files/
 // folder along with the executable to ensure both are present.
 #define BPM_SLEEP_TIME(x) ((60.0/(x)/2.0)*1000.0)
+#define ALARM_FILE_PATH "alarm_sound.wav" 
 #define NUM_MODES 3
 #define VOLUMN_CHANGE_VALUE 5
 #define BPM_CHANGE_VALUE 5
 #define MAX_BPM 300
 #define MIN_BPM 40
 
-static int myMode = 1;
 static bool shouldPlay = false;
 static int volumn = 0;
-static int BPM = 120;
-static int sleep_time_ms = BPM_SLEEP_TIME(120);
+static int BPM = 180;
+static int sleep_time_ms = BPM_SLEEP_TIME(150);
 static pthread_t threadID;
 static wavedata_t alarm_wavedata;
 
 static void play_alarm() {
     AudioMixer_queueSound(&alarm_wavedata);
-    my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&alarm_wavedata);
-    my_sleep_ms(sleep_time_ms);
-    AudioMixer_queueSound(&alarm_wavedata);
-    my_sleep_ms(sleep_time_ms);
-    my_sleep_ms(sleep_time_ms);
+    my_sleep_sec(3);
 }
 
 static void *player_thread(void *args) {
-	while (shouldPlay)
-	{
-        switch (myMode)
-        {
-        case 0:
-            my_lock_signal_wait();
-            break;
-
-        case 1:
-            play_default_beat();
-            break;
-
-        case 2:
-            play_beat_2();
-            break;
-
-        default:
-            printf("Unknow mode\n");
-            break;
-        }
+	while (shouldPlay) {
+        play_alarm();
     }
 
     return 0;
 }
 
-void WavePlayer_playBeat(drum_beats drumBeats) {
-    switch (drumBeats)
-    {
-    case 0:
-        AudioMixer_queueSound(&base_drum);
-        break;
-    
-    case 1:
-        AudioMixer_queueSound(&hi_hat);
-        break;
-
-    case 2:
-        AudioMixer_queueSound(&snare);
-        break;
-
-    default:
-        printf("Unknow drum beat\n");
-        break;
-    }
-}
-
 void WavePlayer_init() {
     AudioMixer_init();
-    initialize_my_lock_signal_wait();
-    AudioMixer_readWaveFileIntoMemory(BASE_DRUM, &base_drum);
-    shouldPlay = true;
+    AudioMixer_readWaveFileIntoMemory(ALARM_FILE_PATH, &alarm_wavedata);
     volumn = AudioMixer_getVolume();
+}
+
+void WavePlayer_start() {
+    shouldPlay = true;
     pthread_create(&threadID, NULL, &player_thread, NULL);
 }
 
 void WavePlayer_stop() {
     shouldPlay = false;
-    if (myMode == 0)
-        my_lock_signal_signal();
-    
     pthread_join(threadID, NULL);
-    my_lock_signal_destory();
-    AudioMixer_freeWaveFileData(&base_drum);
-    AudioMixer_freeWaveFileData(&hi_hat);
-    AudioMixer_freeWaveFileData(&snare);
+}
+
+void WavePlayer_destory() {
+    shouldPlay = false;
+    pthread_join(threadID, NULL);
+    AudioMixer_freeWaveFileData(&alarm_wavedata);
     AudioMixer_cleanup();
 }
 
@@ -180,8 +137,4 @@ int WavePlayer_getCurrentBPM(void) {
 
 int WavePlayer_getCurrentVolumn(void) {
     return AudioMixer_getVolume();
-}
-
-modes WavePlayer_getCurrentMode(void) {
-    return myMode;
 }

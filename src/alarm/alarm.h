@@ -1,24 +1,21 @@
-// alarm.h
-// Module to interact with the alarm on the target
-#ifndef _ALARM_H
-#define _ALARM_H
+#include <stdbool.h>
+// An alarm module which will ring the alarm on scheduled times
+#ifndef _ALARM_H_
+#define _ALARM_H_
 
-// initialie the alarm
-void Alarm_init(void);
+#define DAYS_IN_A_WEEK 7
 
-// make alarm to play sound now
-void Alarm_play(void);
+// initialize the alarm
+// scheduledDayOfWeek is an array of 7 bools from Sunday to Saturday
+void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK]);
 
-// stop the alarm
-void Alarm_stop(void);
+// stop the ringing
+void Alarm_stopRinging(void);
 
-// destory the alarm and free all resource it is using
-void Alarm_destory(void);
+// change the hour and minute of the alarm
+void Alarm_changeTime(int hour, int minute);
 
-// schedule the alarm in the future
-void Alarm_schedule(char* time);
-
-// set what content/music the alarm will play
-void Alarm_set_content(char* file_path);
+// change day of the week
+void Alarm_changeDayOfTheWeek(bool scheduledDayOfWeek[DAYS_IN_A_WEEK]);
 
 #endif

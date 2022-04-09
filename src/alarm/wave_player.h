@@ -6,17 +6,14 @@
 // initialize the WavePlyer
 void WavePlayer_init(void);
 
+// start play the wave file
+void WavePlayer_start(void);
+
 // stop the player
 void WavePlayer_stop(void);
 
-// change the player mode to the next one
-void WavePlayer_goNextMode(void);
-
-// change the player's mode to a mode
-void WavePlayer_changeMode(modes modes);
-
-// play a beat right now
-void WavePlayer_playBeat(drum_beats drumBeats);
+// free everything for the WavePlayer
+void WavePlayer_destory(void);
 
 // raise/decrease player Volumn by 5
 void WavePlayer_raiseVolumn(void);
@@ -35,6 +32,5 @@ bool WavePlayer_setBPM(int BPM);
 //all getters
 int WavePlayer_getCurrentBPM(void);
 int WavePlayer_getCurrentVolumn(void);
-modes WavePlayer_getCurrentMode(void);
 
 #endif

@@ -11,8 +11,8 @@
 #define SLEEP_TIME_MS 300
 
 static const char *KEYPAD_GPIO[NUM_KEYPAD_GPIO] = {
-    "88", "89", "86", "87", "10", "9", 
-    "8", "78", "76", "74", "72", "70"
+    "88", "89", "86", "87", "66", "9", 
+    "8", "78", "76", "67", "69", "68"
 };
 
 typedef enum keypad_element {
@@ -28,6 +28,11 @@ void Keypad_init(void) {
     for (int i = 0; i < NUM_KEYPAD_GPIO; i++) {
         export_to_gpio(KEYPAD_GPIO[i]);
         my_sleep_ms(SLEEP_TIME_MS);
+    }
+
+    my_sleep_ms(SLEEP_TIME_MS);
+
+    for (int i = 0; i < NUM_KEYPAD_GPIO; i++) {        
         // set direction
         char tempString[MAX_BUFFER_SIZE];
         snprintf(tempString, MAX_BUFFER_SIZE - 1, "/sys/class/gpio/gpio%s/direction", KEYPAD_GPIO[i]);
