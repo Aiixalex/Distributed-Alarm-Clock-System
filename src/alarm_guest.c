@@ -4,6 +4,7 @@
 #include "keypad/keypad.h"
 #include "clock/clock.h"
 #include "alarm/alarm.h"
+#include "utility/utility.h"
 
 int main() {
     printf("This is alarm_guest\n");
