@@ -51,9 +51,7 @@ int main(void)
         .varFour = "D = 5",
         .answer = 84,
     };
-    printf("Init\n");
     Screen_init();
-    printf("Set\n");
     Screen_set_problem(p);
 
     return 0;

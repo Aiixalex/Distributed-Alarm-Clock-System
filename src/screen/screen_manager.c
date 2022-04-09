@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "screen_manager.h" 
 #include "OLED_text.h"
@@ -20,14 +21,23 @@
 
 static void set_problem(char* problem, int amt);
 static void set_variables(puzzle problem);
+static void sleep_ms(unsigned int delayMs)
+{
+	const unsigned int NS_PER_MS = 1000 * 1000;
+	const unsigned int NS_PER_SECOND = 1000000000;
 
+	unsigned long long delayNs = delayMs * NS_PER_MS;
+	int seconds = delayNs / NS_PER_SECOND;
+	int nanoseconds = delayNs % NS_PER_SECOND;
+	struct timespec reqDelay = {seconds, nanoseconds};
+	nanosleep(&reqDelay, (struct timespec *) NULL);
+}
 // Init
 void Screen_init(void)
 {
     if(DEBUG)
         printf("Screen init\n");
     OLED_text_init(SSD1327);
-    OLED_text_deactivateScroll();
     OLED_text_clearDisplay();
     OLED_text_setVerticalMode();
 }
@@ -41,8 +51,13 @@ void Screen_destroy(void)
 void Screen_set_problem(puzzle data){
     OLED_text_clearDisplay();
     OLED_text_deactivateScroll();
+
+    OLED_text_setTextXY(END_LINE-1,0);
+    OLED_text_putString("Use Integer");
+    OLED_text_setTextXY(END_LINE,0);
+    OLED_text_putString(" Division :)");
     switch (data.diffculityLevel){
-    case 1:
+    case 1: 
         if(DEBUG)
             printf("Difficulty 1\n");
         set_problem(data.problem, 1);
@@ -62,20 +77,21 @@ void Screen_set_problem(puzzle data){
             printf("Difficulty 4\n");
         set_variables(data);
         set_problem(data.problem, 2);
-        OLED_text_setHorizontalScrollProperties(Scroll_Left, 0,
-                    SCREEN_ROW_START + (CHAR_HEIGHT * 3), 0, 47,
+        OLED_text_setHorizontalScrollProperties(Scroll_Left, 40,
+                    47, 0, 47,
                     Scroll_2Frames);
+        OLED_text_activateScroll();
+        sleep_ms(1000);
+        OLED_text_deactivateScroll();
+        OLED_text_setHorizontalScrollProperties(Scroll_Left, 40,
+            54, 0, 47,
+            Scroll_2Frames);
         OLED_text_activateScroll();
         break;
     
     default:
         break;
     }
-
-    OLED_text_setTextXY(END_LINE-1,0);
-    OLED_text_putString("Use Integer");
-    OLED_text_setTextXY(END_LINE,0);
-    OLED_text_putString(" Division :)");
 }
 static void set_problem(char* problem, int amt){
     OLED_text_setTextXY(HOW_TO_START_LINE,0);
