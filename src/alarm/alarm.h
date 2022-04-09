@@ -5,9 +5,13 @@
 
 #define DAYS_IN_A_WEEK 7
 
+typedef enum bbgType {
+    host, guest
+} bbgType;
+
 // initialize the alarm
 // scheduledDayOfWeek is an array of 7 bools from Sunday to Saturday
-void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK]);
+void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK], bbgType myBBGType);
 
 // stop the ringing
 void Alarm_stopRinging(void);

@@ -5,7 +5,7 @@
 #ifndef _PUZZLE_H
 #define _PUZZLE_H
 
-#define MAX_STRING_LENGTH 100
+#define MAX_STRING_LENGTH 50
 
 typedef enum diffculity {
     easy = 1, medium = 2, hard = 3, genius
