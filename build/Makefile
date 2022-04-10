@@ -4,13 +4,13 @@ SOURCEDIR := $(PROJDIR)/src
 BUILDDIR := $(PROJDIR)/build
 
 # Name of the final executable
-TARGET = main
+TARGET = alarm_host
 
 # Decide whether the commands will be shown or not
 VERBOSE = TRUE
 
 # Create the list of directories
-DIRS = app utils joystick 
+DIRS = app utils joystick msg_processing msg_queue udp
 SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SOURCEDIR)/, $(dir)))
 TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BUILDDIR)/, $(dir)))
 
