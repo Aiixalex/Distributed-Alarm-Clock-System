@@ -19,18 +19,19 @@ exports.listen = function(server) {
 
 function handleCommand(socket) {
 	// Pased string of comamnd to relay
-	socket.on('bbg', function(data) {
+	socket.on('message', function(data) {
 		// Info for connecting to the local process via UDP
-		var errorTimer = setTimeout(function() {
-            socket.emit("error","Lost Connection to BBG, Restart Server and Refresh the page");
-        }, 1000);
-		if(data != "uptime"){
-			clearTimeout(errorTimer);
-		}else{
-			socket.emit('server','response');
-		}
+		// var errorTimer = setTimeout(function() {
+        //     socket.emit("error","Lost Connection to BBG, Restart Server and Refresh the page");
+        // }, 1000);
+		// if(data != "uptime"){
+		// 	clearTimeout(errorTimer);
+		// }else{
+		// 	socket.emit('server','response');
+		// }
 		var PORT = 12345;
 		var HOST = '127.0.0.2';
+		console.log('submit: ' + data);
 		var buffer = new Buffer(data);
 		var client = dgram.createSocket('udp4');
 		client.send(buffer, 0, buffer.length, PORT, HOST, function(err, bytes) {

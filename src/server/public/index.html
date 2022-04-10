@@ -13,48 +13,77 @@
 
 	
 	<div id="content">
-		<div id="status-box">
-			<h2>BeatBox's Status</h2>
-			<div id="status">Requesting Uptime...</div>
+		<div id="list-alarms-box">
+			<h2>Alarms</h2>
+			<div id="alarm-box">
+			</div>
+			<div>
+				<select name="alarms" id="alarm-list-id">
+
+				</select>
+
+				<input type="button" id="remove-id" value="Remove Alarm">
+				<div id="error-box-alarms">
+					<div><code id="error-text-alarms">No error yet... did you hide this div correctly via Javascript? :)</code></div>
+				</div>
+			</div>
 		</div>
 		
 		<div id="left-box">
-			<div id="modediv">
-				<h2>Drum Beat Selection</h2>
-				<p>Current drum beat mode is: <strong><span id="modeid"></span></strong></p>
-				<p>
-					<input type="button" id="modeNone" value="None">
-					<input type="button" id="modeRock1" value="Standard">
-					<input type="button" id="modeRock2" value="Beat 2">
-				</p>
-				<h3>Volumn</h3>
-				<p>
-					<input type="button" id="volumeDown" value=" - ">
-					<input type="text" id="volumeid" value="???" size="3" readonly="">
-					<input type="button" id="volumeUp" value=" + ">
-					(0 - 100)
-				</p>
-                <h3>Tempo (BPM)</h3>
-				<p>
-					<input type="button" id="tempoDown" value=" - ">
-					<input type="text" id="tempoid" value="???" size="3" readonly="">
-					<input type="button" id="tempoUp" value=" + ">
-				</p>
-                <h3>Play Drum Sounds</h3>
-				<p>
-					<input type="button" id="hhatSound" value="Hi-Hat">
-                    <input type="button" id="snareSound" value="Snare">
-                    <input type="button" id="baseSound" value="Base">
-				</p>
+			<div id="clock-box">
+				<br>Current Time:
+				<h1 id=clock-text>00:00</h1>
 			</div>
-			
-		</div>
-		<div id="error-box">
-			<h2>Server Error</h2>
-			<p>Server error detected. Please resolve error before continuing.</p>
-			<div><code id="error-text">No error yet... did you hide this div correctly via Javascript? :)</code></div>
-		</div>
+			<div id="alarm-input">
+				<p>Alarm Time:</p>
+				<h1 id=alarm-text>12:00am</h1>
+			</div>
+			<div id=alarm-buttons>
+					<input type="button" id="hour-up" value=" + ">
+					&nbsp;&nbsp;Hour&nbsp;&nbsp;&nbsp;
+					<input type="button" id="hour-dn" value=" - ">
 
+					&nbsp;&nbsp;
+				
+					<input type="button" id="min-up" value=" + ">
+					Minutes
+					<input type="button" id="min-dn" value=" - ">
+
+					&nbsp;&nbsp;
+
+					<input type="button" id="am-id" value="am">
+					<input type="button" id="pm-id" value="pm">
+
+					<select name="days" id="days-id">
+						<option value=0>Sunday</option>
+						<option value=1>Monday</option>
+						<option value=2>Tuesday</option>
+						<option value=3>Wednesday</option>
+						<option value=4>Thursday</option>
+						<option value=5>Friday</option>
+						<option value=6>Saturday</option>
+					  </select>
+			</div>
+			<br>
+			<input type="button" id="submit-id" value="Set Alarm">
+
+			<input type="radio" id="diff_easy" name="diff" value="1">
+			<label for="diff_easy">Easy</label>
+			<input type="radio" id="diff_med" name="diff" value="2">
+			<label for="diff_med">Meduim</label>
+			<input type="radio" id="diff_hard" name="diff" value="3">
+			<label for="diff_hard">Hard</label>
+			<input type="radio" id="diff_genius" name="diff" value="4">
+			<label for="diff_genius">Genuis</label>
+			<br>
+			<br>
+
+		</div>
+		<!-- <div id="error-box">
+			<div><code id="error-text">No error yet... did you hide this div correctly via Javascript? :)</code></div>
+		</div> -->
+		<br>
+		<input type="button" id="trigger-id" value="TRIGGER ALARM">
 	</div>
 </form>
 	

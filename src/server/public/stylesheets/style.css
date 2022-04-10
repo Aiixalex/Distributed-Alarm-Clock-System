@@ -12,7 +12,7 @@ h1, h2 {
 	margin-top: 10pt;
 }
 
-#status-box {
+#list-alarms-box {
 	float: right;
 	text-align: center;
 	width: 250px;
@@ -31,13 +31,32 @@ h1, h2 {
 	min-height: 200pt;
 }
 
-#error-box {
+#error-box-alarms {
 	border: thin black solid;
 	clear: both;
-	background-color: red;
+	font-size: 25px;
+	font-weight:bold;
+	background-color: grey;
 	padding-left: 10pt;
 	padding-right: 10pt;
 	min-height: 100pt;
 	margin-top: 20px;
 	display: none;
+}
+#clock-box {
+	text-align: center;
+}
+#clock-box {
+	font-size: 30px;
+}
+
+#alarm-input {
+	font-size: 40px;
+	text-align: center;
+}
+#hour-id {
+	float: left;
+}
+#list-alarms-box {
+	display: list-item;
 }
