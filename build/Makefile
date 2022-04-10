@@ -4,13 +4,13 @@ SOURCEDIR := $(PROJDIR)/src
 BUILDDIR := $(PROJDIR)/build
 
 # Name of the final executable
-TARGET = main
+TARGET = alarm_host
 
 # Decide whether the commands will be shown or not
 VERBOSE = TRUE
 
 # Create the list of directories
-DIRS = joystick
+DIRS = app utils joystick msg_processing msg_queue udp
 SOURCEDIRS = $(foreach dir, $(DIRS), $(addprefix $(SOURCEDIR)/, $(dir)))
 TARGETDIRS = $(foreach dir, $(DIRS), $(addprefix $(BUILDDIR)/, $(dir)))
 
@@ -32,9 +32,10 @@ DEPS = $(OBJS:.o=.d)
 LIBS = -lpthread
 
 # Name the compiler
-CC = gcc
+CROSS_TOOL = arm-linux-gnueabihf-
+CC_C = $(CROSS_TOOL)gcc
 
-CFLAGS = $(INCLUDES)
+CFLAGS = $(INCLUDES) -Wall -g -std=c99 -D _POSIX_C_SOURCE=200809L -D _DEFAULT_SOURCE -Werror
 
 LFLAGS = $(LIBS)
 
@@ -67,7 +68,7 @@ endif
 define generateRules
 $(1)/%.o: %.c
 	@echo Building $$@
-	$(HIDE)$(CC) -c $(CFLAGS) -o $$(subst /,$$(PSEP),$$@) $$(subst /,$$(PSEP),$$<) -MMD
+	$(HIDE)$(CC_C) -c $(CFLAGS) -o $$(subst /,$$(PSEP),$$@) $$(subst /,$$(PSEP),$$<) -MMD
 endef
 
 .PHONY: all clean directories 
@@ -76,7 +77,7 @@ all: directories $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(HIDE)echo Linking $@
-	$(HIDE)$(CC) $(OBJS) -o $(TARGET) $(LFLAGS)
+	$(HIDE)$(CC_C) $(OBJS) -o $(TARGET) $(LFLAGS)
 
 # Include dependencies
 -include $(DEPS)
