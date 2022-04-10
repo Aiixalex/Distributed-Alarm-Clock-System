@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)https://opencoursehub.cs.sfu.ca/bfraser/solutions/433/as3/sample_index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Alarm Clock</title>
+	
+	<link rel="stylesheet" href="./stylesheets/style.css">
+</head>
+
+<body>
+<form>
+	<h1>Alarm Clock Configuration</h1>
+	<div>By: Team HAP</div>
+
+	
+	<div id="content">
+		<div id="list-alarms-box">
+			<h2>Alarms</h2>
+			<div id="alarm-box">
+			</div>
+			<div>
+				<select name="alarms" id="alarm-list-id">
+
+				</select>
+
+				<input type="button" id="remove-id" value="Remove Alarm">
+				<div id="error-box-alarms">
+					<div><code id="error-text-alarms">No error yet... did you hide this div correctly via Javascript? :)</code></div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="left-box">
+			<div id="clock-box">
+				<br>Current Time:
+				<h1 id=clock-text>00:00</h1>
+			</div>
+			<div id="alarm-input">
+				<p>Alarm Time:</p>
+				<h1 id=alarm-text>12:00am</h1>
+			</div>
+			<div id=alarm-buttons>
+					<input type="button" id="hour-up" value=" + ">
+					&nbsp;&nbsp;Hour&nbsp;&nbsp;&nbsp;
+					<input type="button" id="hour-dn" value=" - ">
+
+					&nbsp;&nbsp;
+				
+					<input type="button" id="min-up" value=" + ">
+					Minutes
+					<input type="button" id="min-dn" value=" - ">
+
+					&nbsp;&nbsp;
+
+					<input type="button" id="am-id" value="am">
+					<input type="button" id="pm-id" value="pm">
+
+					<select name="days" id="days-id">
+						<option value=0>Sunday</option>
+						<option value=1>Monday</option>
+						<option value=2>Tuesday</option>
+						<option value=3>Wednesday</option>
+						<option value=4>Thursday</option>
+						<option value=5>Friday</option>
+						<option value=6>Saturday</option>
+					  </select>
+			</div>
+			<br>
+			<input type="button" id="submit-id" value="Set Alarm">
+
+			<input type="radio" id="diff_easy" name="diff" value="1">
+			<label for="diff_easy">Easy</label>
+			<input type="radio" id="diff_med" name="diff" value="2">
+			<label for="diff_med">Meduim</label>
+			<input type="radio" id="diff_hard" name="diff" value="3">
+			<label for="diff_hard">Hard</label>
+			<input type="radio" id="diff_genius" name="diff" value="4">
+			<label for="diff_genius">Genuis</label>
+			<br>
+			<br>
+
+		</div>
+		<!-- <div id="error-box">
+			<div><code id="error-text">No error yet... did you hide this div correctly via Javascript? :)</code></div>
+		</div> -->
+		<br>
+		<input type="button" id="trigger-id" value="TRIGGER ALARM">
+	</div>
+</form>
+	
+    <script src='/socket.io/socket.io.js' type='text/javascript'></script>
+    <script src='http://code.jquery.com/jquery-1.8.0.min.js' type='text/javascript'></script>
+    <script src='javascripts/alarm_clock_ui.js' type='text/javascript'></script>
+
+</body></html>
