@@ -16,22 +16,19 @@ exports.listen = function(server) {
 		handleCommand(socket);
 	});
 };
-
+var send_update = false;
 function handleCommand(socket) {
 	// Pased string of comamnd to relay
 	socket.on('message', function(data) {
 		// Info for connecting to the local process via UDP
-		// var errorTimer = setTimeout(function() {
-        //     socket.emit("error","Lost Connection to BBG, Restart Server and Refresh the page");
-        // }, 1000);
-		// if(data != "uptime"){
-		// 	clearTimeout(errorTimer);
-		// }else{
-		// 	socket.emit('server','response');
-		// }
 		var PORT = 12345;
 		var HOST = '127.0.0.2';
 		console.log('submit: ' + data);
+		// FOR Testing Change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if(!send_update){
+			socket.emit("update","2:23:03:0:2:04:3");
+			send_update = true;
+		}
 		var buffer = new Buffer(data);
 		var client = dgram.createSocket('udp4');
 		client.send(buffer, 0, buffer.length, PORT, HOST, function(err, bytes) {
