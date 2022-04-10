@@ -4,12 +4,14 @@
 #include "clock/clock.h"
 #include "alarm/alarm.h"
 #include "utility/utility.h"
+#include "screen/screen_manager.h"
 
 static diffculity puzzleDiffculity = easy;
 
 int main() {
     printf("This is alarm_host\n");
     initialize_my_lock_signal_wait();
+    Screen_init();
     
     int hour = 6, minute = 27;
     bool activeDayOfWeek[7] = {0, 0, 0, 0, 1, 1, 1};
@@ -22,8 +24,8 @@ int main() {
         Clock_setDisplayType(rectangle);
 
         // generate puzzle and send message to BBG1
-        Puzzle_generate(puzzleDiffculity);
-        // TODO: display on the screen
+        puzzle currentPuzzle = Puzzle_generate(puzzleDiffculity);
+        Screen_set_problem(currentPuzzle);
 
         // wait for response from BBG2
         // BBG2 should only send message if the answer is correct
@@ -33,6 +35,7 @@ int main() {
         // if correct, disable alarm for today
         // sned message to BBG 1 to disbale their alarm
         Alarm_stopRinging();
+        Screen_destroy();
     }
 
     return 0;
