@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <string.h>
 #include "../utility/utility.h"
 #include "../clock/clock.h"
 #include "alarm.h"
@@ -97,4 +98,23 @@ void Alarm_changeDayOfTheWeek(bool scheduledDayOfWeek[DAYS_IN_A_WEEK]) {
     for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
         scheduled_day_of_week[i] = scheduledDayOfWeek[i];
     }
+}
+
+// TODO: need to double check?
+char *Alarm_getScheduledTime(void) {
+    char scheduledTime[MAX_STRING_LENGTH] = "";
+    // char *scheduledTime = malloc(MAX_STRING_LENGTH);
+
+    int temp = 0;
+    for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
+        if (scheduled_day_of_week[i])
+            temp = i;
+    }
+    snprintf(scheduledTime, MAX_STRING_LENGTH - 1, "%d:%d:%d", scheduled_hour,
+             scheduled_minute, scheduled_day_of_week[0]);
+    // snprintf(scheduledTime, MAX_STRING_LENGTH - 1, "%d:%d:%d:%d:%d:%d:%d:%d:%d",
+    //          scheduled_hour, scheduled_minute, scheduled_day_of_week[0],
+    //          scheduled_day_of_week[1], scheduled_day_of_week[2],
+    //          scheduled_day_of_week[3], scheduled_day_of_week[4],
+    //          scheduled_day_of_week[5], scheduled_day_of_week[6]);
 }

@@ -4,6 +4,7 @@
 #define _ALARM_H_
 
 #define DAYS_IN_A_WEEK 7
+#define MAX_STRING_LENGTH 150
 
 typedef enum bbgType {
     host, guest
@@ -21,5 +22,9 @@ void Alarm_changeTime(int hour, int minute);
 
 // change day of the week
 void Alarm_changeDayOfTheWeek(bool scheduledDayOfWeek[DAYS_IN_A_WEEK]);
+
+// get the scheduled alarm in a string format HH:MM
+// ! User need to free the ptr returned
+char *Alarm_getScheduledTime(void);
 
 #endif

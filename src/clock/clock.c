@@ -7,7 +7,7 @@
 #include "i2c_display.h"
 #include "../utility/utility.h"
 
-#define USER_ANSER_DISPLAY_TIME_SEC 2
+#define USER_ANSWER_DISPLAY_TIME_SEC 2
 
 static pthread_t clockThreadID;
 static displayStyle currentStyle = second;
@@ -50,6 +50,6 @@ void Clock_setDisplayType(displayStyle myStyle) {
 void Clock_displayNumber(int number) {
     digits = number % 100;
     displayDigits = true;
-    my_sleep_sec(USER_ANSER_DISPLAY_TIME_SEC);
+    my_sleep_sec(USER_ANSWER_DISPLAY_TIME_SEC);
     displayDigits = false;
 }
