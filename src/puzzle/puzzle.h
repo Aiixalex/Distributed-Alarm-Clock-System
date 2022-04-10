@@ -5,7 +5,7 @@
 #ifndef _PUZZLE_H
 #define _PUZZLE_H
 
-#define MAX_STRING_LENGTH 50
+#define MAX_STRING_LENGTH_PUZZLE 50
 
 typedef enum diffculity {
     easy = 1, medium = 2, hard = 3, genius
@@ -14,11 +14,11 @@ typedef enum diffculity {
 // varOne, varTwo, varThree is only used if the diffculity is genius
 typedef struct puzzle {
     diffculity diffculityLevel;
-    char problem[MAX_STRING_LENGTH];
-    char varOne[MAX_STRING_LENGTH];
-    char varTwo[MAX_STRING_LENGTH];
-    char varThree[MAX_STRING_LENGTH];
-    char varFour[MAX_STRING_LENGTH];
+    char problem[MAX_STRING_LENGTH_PUZZLE];
+    char varOne[MAX_STRING_LENGTH_PUZZLE];
+    char varTwo[MAX_STRING_LENGTH_PUZZLE];
+    char varThree[MAX_STRING_LENGTH_PUZZLE];
+    char varFour[MAX_STRING_LENGTH_PUZZLE];
     int answer;
 } puzzle;
 

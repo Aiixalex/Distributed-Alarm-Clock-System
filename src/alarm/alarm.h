@@ -27,4 +27,7 @@ void Alarm_changeDayOfTheWeek(bool scheduledDayOfWeek[DAYS_IN_A_WEEK]);
 // ! User need to free the ptr returned
 char *Alarm_getScheduledTime(void);
 
+// manually trigger the alarm
+void Alarm_trigger_alarm_manually(void);
+
 #endif

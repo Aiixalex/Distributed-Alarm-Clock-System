@@ -82,11 +82,11 @@ static void transformPuzzle(puzzle *myPuzzle) {
            &opArray[1],
            &digitArray[2], &opArray[2], &digitArray[3]);
 
-    snprintf(myPuzzle->varOne, MAX_STRING_LENGTH - 1, "A = %d", digitArray[0]);
-    snprintf(myPuzzle->varTwo, MAX_STRING_LENGTH - 1, "B = %d", digitArray[1]);
-    snprintf(myPuzzle->varThree, MAX_STRING_LENGTH - 1, "C = %d", digitArray[2]);
-    snprintf(myPuzzle->varFour, MAX_STRING_LENGTH - 1, "D = %d", digitArray[3]);
-    snprintf(myPuzzle->problem, MAX_STRING_LENGTH - 1, "(A %c B) %c (C %c D)", 
+    snprintf(myPuzzle->varOne, MAX_STRING_LENGTH_PUZZLE - 1, "A = %d", digitArray[0]);
+    snprintf(myPuzzle->varTwo, MAX_STRING_LENGTH_PUZZLE - 1, "B = %d", digitArray[1]);
+    snprintf(myPuzzle->varThree, MAX_STRING_LENGTH_PUZZLE - 1, "C = %d", digitArray[2]);
+    snprintf(myPuzzle->varFour, MAX_STRING_LENGTH_PUZZLE - 1, "D = %d", digitArray[3]);
+    snprintf(myPuzzle->problem, MAX_STRING_LENGTH_PUZZLE - 1, "(A %c B) %c (C %c D)", 
              opArray[0], opArray[1], opArray[2]);
 }
 
@@ -100,17 +100,17 @@ puzzle Puzzle_generate(diffculity myDiffculity) {
     if (myPuzzle.diffculityLevel == genius)
         myDiffculity = 2;
 
-    char *tempString = malloc(MAX_STRING_LENGTH);
+    char *tempString = malloc(MAX_STRING_LENGTH_PUZZLE);
     tempString[0] = '\0';
 
-    generate_simple_random_problem(tempString, MAX_STRING_LENGTH);
-    snprintf(myPuzzle.problem, MAX_STRING_LENGTH - 1, "%s", tempString);
+    generate_simple_random_problem(tempString, MAX_STRING_LENGTH_PUZZLE);
+    snprintf(myPuzzle.problem, MAX_STRING_LENGTH_PUZZLE - 1, "%s", tempString);
     answer = get_answer_to_simple_problem(tempString);
 
     for (int i = 0; i < myDiffculity - 1; i++){
         tempString[0] = '\0';
         int myOp = rand() % NUM_OPERATIONS;
-        generate_simple_random_problem(tempString, MAX_STRING_LENGTH);
+        generate_simple_random_problem(tempString, MAX_STRING_LENGTH_PUZZLE);
 
         int tempAnswer = get_answer_to_simple_problem(tempString);
         if (myOp == divide && tempAnswer == 0) {
@@ -118,10 +118,10 @@ puzzle Puzzle_generate(diffculity myDiffculity) {
             continue;
         }
 
-        char opString[MAX_STRING_LENGTH];
-        snprintf(opString, MAX_STRING_LENGTH - 1, " %c ", opeartions[myOp]);
-        strncat(myPuzzle.problem, opString, MAX_STRING_LENGTH - 1);
-        strncat(myPuzzle.problem, tempString, MAX_STRING_LENGTH - 1);
+        char opString[MAX_STRING_LENGTH_PUZZLE];
+        snprintf(opString, MAX_STRING_LENGTH_PUZZLE - 1, " %c ", opeartions[myOp]);
+        strncat(myPuzzle.problem, opString, MAX_STRING_LENGTH_PUZZLE - 1);
+        strncat(myPuzzle.problem, tempString, MAX_STRING_LENGTH_PUZZLE - 1);
         
         switch (myOp)
         {

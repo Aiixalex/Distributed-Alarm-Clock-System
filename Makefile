@@ -26,7 +26,7 @@ $(HOST_TARGET_NAME): $(HOST_MAIN) $(CFILES)
 
 node: $(wildcard server/**/*)
 	mkdir -p $(DEPLOY_PATH)
-	cp -R server/* $(DEPLOY_PATH)
+	cp -R src/server/* $(DEPLOY_PATH)
 	chmod a+rwx $(DEPLOY_PATH)
 	cd $(DEPLOY_PATH) && npm install
 

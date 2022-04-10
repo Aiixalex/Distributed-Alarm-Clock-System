@@ -8,6 +8,10 @@
 #include "../utils/handle_error.h"
 #include "../msg_queue/list.h"
 #include "../msg_queue/message_queue.h"
+#include "../keypad/keypad.h"
+#include "../clock/clock.h"
+#include "../screen/screen_manager.h"
+#include "../alarm/alarm.h"
 
 static pthread_t msg_processing_thread;
 static pthread_mutex_t msg_processing_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -20,14 +24,45 @@ void process_message(List *message_queue, char* message)
         MessageEnqueue(message_queue, "PUZZLE_ANSWER");
         printf("1\n");
     }
-    else if (strcmp(message, "PUZZLE_ANSWER") == 0)
+    else if (strncmp(message, "PUZZLE_ANSWER", 13) == 0)
     {
-        MessageEnqueue(message_queue, "ANSWER_CORRECT");
-        printf("2\n");
+        // received a message which contains the problem struct from BBG 1
+        int answer = 0;
+        sscanf(message, "PUZZLE_ANSWER %d", &answer);
+
+        // read input from user
+        while (1)
+        {
+            Clock_setDisplayType(rectangle);
+            int number = Keypad_readUserInput();
+            printf("User input: %d\n", number);
+            Clock_displayNumber(number);
+            if (number == answer)
+                break;
+        }
+        
+        // if correct, disable alarm for today
+        // sned message to BBG 1 to disbale their alarm
+        Alarm_stopRinging();
     }
     else if (strcmp(message, "ANSWER_CORRECT") == 0)
     {
-        printf("3\n");
+        Alarm_stopRinging();
+        Screen_destroy();
+    }else if(strncmp(message, "update", 6) == 0){
+        // Get time
+        // char* msg = Alarm_getScheduledTime();
+        //Send Time to website
+        // MessageEnqueue(send_queue, msg);
+
+    }else if(strncmp(message, "submit", 6) == 0){
+        // Set the Alarm
+
+    }else if(strncmp(message, "remove", 6) == 0){
+        // Remove the Alarm
+    }else if(strcmp(message, "trigger") == 0){
+        // Send Alarm to Website
+        Alarm_trigger_alarm_manually();
     }
 }
 
