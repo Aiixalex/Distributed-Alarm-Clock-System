@@ -18,12 +18,7 @@ $(document).ready(function() {
     $('#error-box-alarms').css('display', 'block');
     $('#error-box-alarms').hide();
     // Get List of Alarms
-    socket.emit("message","update");
-    var alarm_timeout = window.setTimeout(function() {
-        handleError("alarms","Cannot Connect to Alarm");
-        clearInterval(this);
-    },3000);
-
+    //socket.emit("message","update");
     const clockInterval = window.setInterval(function() {
         update_clock();
     });
@@ -144,9 +139,7 @@ $(document).ready(function() {
             // D = day [0-6]->[sunday-saturday] 
             socket.emit("message", "remove ".concat("1:",hours_str,":",mins_str,":",day));
         }else{
-            var errorTimer = setTimeout(function() {
-                handleError("alarms","No Items to Remove");
-            }, 1000);
+            handleError("alarms","No Items to Remove");
         }
 	});
     // Send a Trigger to start the alarm
@@ -160,6 +153,21 @@ $(document).ready(function() {
         update_list(data);
     });
 });
+    function is_same_time(hour,min,suffix, day){
+        var select = document.getElementById("alarm-list-id");
+        if(num_alarms == 0){
+            return true;
+        }
+        var current_time = select.options[0].text;
+        var date_split = current_time.split(' ').slice(0);
+        var timesplit = date_split[0].split(':').slice(0);
+        var c_hours_str = timesplit[0];
+        var c_suffix = timesplit[1].substring(2,4);
+        var c_mins_str = timesplit[1].substring(0,2);
+        var c_day = date_split[1];
+        return (hour == c_hours_str) && (c_mins_str == min) && (suffix == c_suffix) && (day != c_day);
+
+    }
     function add_alarm(time){
         if(num_alarms < 7){
             // Put into Proper String
@@ -167,13 +175,9 @@ $(document).ready(function() {
             var select = document.getElementById("alarm-list-id");
             var size = select.length;
             // Check if alarms is set
-            for(var i = 0; i < size; i++){
-                if(select.options[i].text.localeCompare(alarm_str) == 0){
-                    var errorTimer = setTimeout(function() {
-                        handleError("alarms","Alarm Already in List");
-                    }, 1000);
-                    return false;
-                }
+            if(!is_same_time(time[0],time[1],time[2],time[3])){
+                handleError("alarms","Not Same Time or Duplicate Date");
+                return false;
             }
             //Create option
             var option = document.createElement("option")
@@ -189,9 +193,7 @@ $(document).ready(function() {
             $('#alarm-box').append($div);
             return true;
         }else{
-            var errorTimer = setTimeout(function() {
                 handleError("alarms","Cannot Add More Alarms");
-            }, 1000);
         }
         return false;
     }
