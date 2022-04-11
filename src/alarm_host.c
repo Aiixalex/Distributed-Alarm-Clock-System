@@ -30,7 +30,7 @@ int main() {
 
     // default settings
     int hour = 6, minute = 27;
-    bool activeDayOfWeek[7] = {0, 0, 0, 1, 0, 0, 0};
+    bool activeDayOfWeek[7] = {0, 0, 0, 0, 0, 0, 0};
     Alarm_init(hour + 12, minute, activeDayOfWeek, 0);
 
     while (1) {

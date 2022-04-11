@@ -1,7 +1,3 @@
-# binary files for the exectuable
-alarm_guest
-alarm_host
-
 # Prerequisites
 *.d
 
