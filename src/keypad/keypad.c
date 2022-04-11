@@ -66,6 +66,7 @@ int Keypad_readUserInput(void) {
                 }
 
                 userInput[userInputIndex] = '0' + KEYPAD_KEYS[i];
+                printf("Keypad read: %c\n", userInput[userInputIndex]);
                 userInputIndex++;
                 keypad_isResetted[i] = 0;
             }

@@ -45,6 +45,8 @@ void process_message(List *message_queue, char* message)
         // if correct, disable alarm for today
         // sned message to BBG 1 to disbale their alarm
         Alarm_stopRinging();
+        char *myData = malloc(MAX_STRING_LENGTH);
+        snprintf(myData, MAX_STRING_LENGTH - 1, "ANSWER_CORRECT");
     }
     else if (strcmp(message, "ANSWER_CORRECT") == 0)
     {
