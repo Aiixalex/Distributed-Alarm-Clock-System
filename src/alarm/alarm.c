@@ -31,7 +31,6 @@ static void *alarmThread(void *args) {
                 && now_tm->tm_min >= scheduled_minute) || shouldManualTrigger) {
                 WavePlayer_start();
 
-                printf("Test: %d, %d\n", myBBGType, shouldManualTrigger);
                 if ((myBBGType == host) && !shouldManualTrigger) {
                     my_lock_signal_signal();
                     printf("Host: signal sent!\n");
@@ -58,7 +57,7 @@ static void printAlarmInfo() {
     else
         printf("Alarm %s:\n", "guest");
     printf("Time set to day %d and %d:%d\n", scheduled_day, scheduled_hour, scheduled_minute);
-    printf("Alarm activiated to (Sunday - Saturaday): ");
+    printf("Alarm activated to (Sunday - Saturaday): ");
     for (int i = 0; i < DAYS_IN_A_WEEK - 1; i++) {
         printf("%d, ", scheduled_day_of_week[i]);
     }
@@ -110,6 +109,7 @@ void Alarm_clear() {
     for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
         scheduled_day_of_week[i] = 0;
     }
+    scheduled_day = 0;
     printf("-----------AlarmClear-----------\n");
     printAlarmInfo();
     printf("----------------------\n");
@@ -122,9 +122,7 @@ void Alarm_changeOneDayOfTheWeek(int day) {
     printf("----------------------\n");
 }
 
-// TODO: need to double check?
 char *Alarm_getScheduledTime(void) {
-    // char scheduledTime[MAX_STRING_LENGTH] = "";
     char *scheduledTime = malloc(MAX_STRING_LENGTH);
 
     int temp = 0;
@@ -136,11 +134,6 @@ char *Alarm_getScheduledTime(void) {
     }
     snprintf(scheduledTime, MAX_STRING_LENGTH - 1, "1:%d:%d:%d", scheduled_hour,
              scheduled_minute, temp);
-    // snprintf(scheduledTime, MAX_STRING_LENGTH - 1, "%d:%d:%d:%d:%d:%d:%d:%d:%d",
-    //          scheduled_hour, scheduled_minute, scheduled_day_of_week[0],
-    //          scheduled_day_of_week[1], scheduled_day_of_week[2],
-    //          scheduled_day_of_week[3], scheduled_day_of_week[4],
-    //          scheduled_day_of_week[5], scheduled_day_of_week[6]);
 
     return scheduledTime;
 }
