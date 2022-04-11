@@ -30,4 +30,10 @@ char *Alarm_getScheduledTime(void);
 // manually trigger the alarm
 void Alarm_trigger_alarm_manually(void);
 
+void Alarm_stop_trigger_manually(void);
+
+void Alarm_changeOneDayOfTheWeek(int day);
+
+void Alarm_clear(void);
+
 #endif

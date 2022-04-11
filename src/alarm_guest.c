@@ -22,12 +22,14 @@ int main() {
     Keypad_init();
     initialize_my_lock_signal_wait();
     int hour = 6, minute = 27;
-    bool activeDayOfWeek[7] = {0, 0, 0, 0, 1, 1, 1};
+    bool activeDayOfWeek[7] = {0, 0, 0, 0, 0, 0, 0};
     Alarm_init(hour + 12, minute, activeDayOfWeek, guest);
 
     InitUdpClient(send_queue, remote_name, remote_port);
     InitUdpServer(recv_queue, my_port);
-    InitMessageProcessing(recv_queue);
+
+    struct MsgQueues msg_queues = {recv_queue, send_queue};
+    InitMessageProcessing(&msg_queues);
 
     ShutDownUdpClient();
     ShutDownUdpServer();

@@ -24,7 +24,9 @@ typedef struct puzzle {
 
 // generate a random puzzle
 // ! the answer to the problem would be in abs(int(answer))
-puzzle Puzzle_generate(diffculity myDiffculity);
+puzzle Puzzle_generate();
+
+void Puzzle_updateDiffculity(diffculity diff);
 
 // print puzzle
 void Puzzle_printPuzzle(puzzle myPuzzle);

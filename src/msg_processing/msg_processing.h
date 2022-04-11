@@ -3,9 +3,15 @@
 
 #include "../msg_queue/list.h"
 
-void* ReadMessage(void* message_queue);
+struct MsgQueues
+{
+    List *recv_queue;
+    List *send_queue;
+};
+
+void *ReadMessage(void *msg_queues_ptr);
 void SignalMsgProcessing();
-void InitMessageProcessing(List* message_queue);
+void InitMessageProcessing(struct MsgQueues *msg_queues_ptr);
 void ShutDownMessageProcessing();
 void CancelMessageProcessing();
 

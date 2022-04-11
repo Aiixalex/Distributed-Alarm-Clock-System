@@ -10,8 +10,6 @@
 #include "udp/udp_client.h"
 #include "udp/udp_server.h"
 
-static diffculity puzzleDiffculity = easy;
-
 int main() {
     printf("This is alarm_host\n");
     initialize_my_lock_signal_wait();
@@ -26,11 +24,13 @@ int main() {
 
     InitUdpClient(send_queue, remote_name, remote_port);
     InitUdpServer(recv_queue, my_port);
-    InitMessageProcessing(recv_queue);
+
+    struct MsgQueues msg_queues = {recv_queue, send_queue};
+    InitMessageProcessing(&msg_queues);
 
     // default settings
     int hour = 6, minute = 27;
-    bool activeDayOfWeek[7] = {0, 0, 0, 0, 1, 1, 1};
+    bool activeDayOfWeek[7] = {0, 0, 0, 0, 0, 0, 0};
     Alarm_init(hour + 12, minute, activeDayOfWeek, guest);
 
     while (1) {
@@ -43,7 +43,7 @@ int main() {
         Clock_setDisplayType(rectangle);
 
         // generate puzzle and send message to BBG1
-        puzzle currentPuzzle = Puzzle_generate(puzzleDiffculity);
+        puzzle currentPuzzle = Puzzle_generate();
         Screen_set_problem(currentPuzzle);
 
         //send problem to BBG2

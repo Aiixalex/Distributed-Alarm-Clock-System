@@ -39,7 +39,6 @@ static void *alarmThread(void *args) {
                 struct tm *tmr_tm = localtime(&tmr);
                 scheduled_day = tmr_tm->tm_mday;
                 printf("Alarm triggered, alarm will reactivate on day %d\n", scheduled_day);
-                shouldManualTrigger = false;
             }
         }
 
@@ -100,6 +99,19 @@ void Alarm_changeDayOfTheWeek(bool scheduledDayOfWeek[DAYS_IN_A_WEEK]) {
     for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
         scheduled_day_of_week[i] = scheduledDayOfWeek[i];
     }
+    printAlarmInfo();
+}
+
+void Alarm_clear() {
+    for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
+        scheduled_day_of_week[i] = 0;
+    }
+    printAlarmInfo();
+}
+
+void Alarm_changeOneDayOfTheWeek(int day) {
+    scheduled_day_of_week[day] = 1;
+    printAlarmInfo();
 }
 
 // TODO: need to double check?
@@ -127,4 +139,8 @@ char *Alarm_getScheduledTime(void) {
 
 void Alarm_trigger_alarm_manually(void) {
     shouldManualTrigger = true;
+}
+
+void Alarm_stop_trigger_manually(void) {
+    shouldManualTrigger = false;
 }

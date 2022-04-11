@@ -14,12 +14,13 @@
 #include "../alarm/alarm.h"
 #include "../utility/utility.h"
 #include "../screen/OLED_text.h"
+#include "msg_processing.h"
 
 static pthread_t msg_processing_thread;
 static pthread_mutex_t msg_processing_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t msg_processing_cond = PTHREAD_COND_INITIALIZER;
 
-void process_message(List *message_queue, char* message)
+void process_message(char* message, struct MsgQueues *msg_queues_ptr)
 {
     if (strncmp(message, "PUZZLE_ANSWER", 13) == 0)
     {
@@ -45,34 +46,50 @@ void process_message(List *message_queue, char* message)
         // if correct, disable alarm for today
         // sned message to BBG 1 to disbale their alarm
         Alarm_stopRinging();
+
         char *myData = malloc(MAX_STRING_LENGTH);
         snprintf(myData, MAX_STRING_LENGTH - 1, "ANSWER_CORRECT");
+        MessageEnqueueAndSignalClient(msg_queues_ptr->send_queue, myData);
     }
     else if (strcmp(message, "ANSWER_CORRECT") == 0)
     {
         printf("msg ANSWER_CORRECT recved\n");
         Alarm_stopRinging();
+        Clock_setDisplayType(host);
         OLED_text_clearDisplay();
-    }else if(strncmp(message, "update", 6) == 0){
-        // Get time
-        // char* msg = Alarm_getScheduledTime();
-        //Send Time to website
-        // MessageEnqueueAndSignalClient(send_queue, msg);
-
     }else if(strncmp(message, "submit", 6) == 0){
         // Set the Alarm
-
+        int hour = 0;
+        int minute = 0;
+        int day = 0;
+        int difficulty = 0;
+        sscanf(message, "submit %d:%d:%d:%d", &hour, &minute, &day, &difficulty);
+        Alarm_changeTime(hour, minute);
+        Alarm_changeOneDayOfTheWeek(day);
+        Puzzle_updateDiffculity(difficulty);
     }else if(strncmp(message, "remove", 6) == 0){
         // Remove the Alarm
+        Alarm_clear();
     }else if(strcmp(message, "trigger") == 0){
         // Send Alarm to Website
         printf("message trigger recved\n");
-        my_lock_signal_signal();
+
+        // received a message which contains the problem struct from BBG 1
+        Clock_setDisplayType(rectangle);
+
+        // generate puzzle and send message to BBG1
+        puzzle currentPuzzle = Puzzle_generate();
+        Screen_set_problem(currentPuzzle);
+
+        //send problem to BBG2
+        char *myData = malloc(MAX_STRING_LENGTH);
+        snprintf(myData, MAX_STRING_LENGTH - 1, "PUZZLE_ANSWER %d", currentPuzzle.answer);
+        MessageEnqueueAndSignalClient(msg_queues_ptr->send_queue, myData);  
         Alarm_trigger_alarm_manually();
     }
 }
 
-void *ReadMessage(void *message_queue)
+void *ReadMessage(void* msg_queues_ptr)
 {
     while (1)
     {
@@ -80,7 +97,7 @@ void *ReadMessage(void *message_queue)
         pthread_cond_wait(&msg_processing_cond, &msg_processing_mutex);
         pthread_mutex_unlock(&msg_processing_mutex);
 
-        char *message = MessageDequeue(message_queue);
+        char *message = MessageDequeue(((struct MsgQueues *)msg_queues_ptr)->recv_queue);
         if (message == NULL)
         {
             fprintf(stderr, "message dequeue failed.");
@@ -92,7 +109,7 @@ void *ReadMessage(void *message_queue)
         //     handle_error("Output function write() failed.");
         // }
 
-        process_message(message_queue, message);
+        process_message(message, msg_queues_ptr);
 
         free(message);
     }
@@ -108,9 +125,9 @@ void SignalMsgProcessing()
     pthread_mutex_unlock(&msg_processing_mutex);
 }
 
-void InitMessageProcessing(List *message_queue)
+void InitMessageProcessing(struct MsgQueues *msg_queues_ptr)
 {
-    int error_num = pthread_create(&msg_processing_thread, NULL, &ReadMessage, message_queue);
+    int error_num = pthread_create(&msg_processing_thread, NULL, &ReadMessage, msg_queues_ptr);
     if (error_num != 0)
     {
         handle_error_en(error_num, "pthread_create msg_processing_thread failed.");

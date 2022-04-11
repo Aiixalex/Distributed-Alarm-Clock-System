@@ -11,6 +11,8 @@
 #define NUM_SYMBOLS 4
 #define BUFFER_SIZE 100
 
+static diffculity myDiffculity = easy;
+
 enum op {
     plus, minus, multiply, divide
 };
@@ -90,7 +92,7 @@ static void transformPuzzle(puzzle *myPuzzle) {
              opArray[0], opArray[1], opArray[2]);
 }
 
-puzzle Puzzle_generate(diffculity myDiffculity) {
+puzzle Puzzle_generate() {
     srand(time(NULL));
     int answer = 0;
     puzzle myPuzzle;
@@ -150,4 +152,8 @@ puzzle Puzzle_generate(diffculity myDiffculity) {
         transformPuzzle(&myPuzzle);
 
     return myPuzzle;
+}
+
+void Puzzle_updateDiffculity(diffculity myDiff) {
+    myDiffculity = myDiff;
 }
