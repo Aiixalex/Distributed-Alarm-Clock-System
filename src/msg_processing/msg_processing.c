@@ -21,12 +21,7 @@ static pthread_cond_t msg_processing_cond = PTHREAD_COND_INITIALIZER;
 
 void process_message(List *message_queue, char* message)
 {
-    if (strcmp(message, "SCREEN_SHOW_PUZZLE") == 0)
-    {
-        MessageEnqueueAndSignalClient(message_queue, "PUZZLE_ANSWER");
-        printf("1\n");
-    }
-    else if (strncmp(message, "PUZZLE_ANSWER", 13) == 0)
+    if (strncmp(message, "PUZZLE_ANSWER", 13) == 0)
     {
         // received a message which contains the problem struct from BBG 1
         printf("msg PUZZLE_ANSWER recved");
@@ -34,15 +29,18 @@ void process_message(List *message_queue, char* message)
         sscanf(message, "PUZZLE_ANSWER %d", &answer);
 
         // read input from user
+        Clock_setDisplayType(rectangle);
+        Alarm_trigger_alarm_manually();
         while (1)
         {
-            Clock_setDisplayType(rectangle);
             int number = Keypad_readUserInput();
             printf("User input: %d\n", number);
             Clock_displayNumber(number);
             if (number == answer)
                 break;
         }
+        Clock_setDisplayType(guest);
+        Alarm_stopRinging();
         
         // if correct, disable alarm for today
         // sned message to BBG 1 to disbale their alarm

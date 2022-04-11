@@ -47,7 +47,7 @@ int main() {
         Screen_set_problem(currentPuzzle);
 
         //send problem to BBG2
-        char myData[MAX_STRING_LENGTH] = "";
+        char *myData = malloc(MAX_STRING_LENGTH);
         snprintf(myData, MAX_STRING_LENGTH - 1, "PUZZLE_ANSWER %d", currentPuzzle.answer);
         MessageEnqueueAndSignalClient(send_queue, myData);        
     }
