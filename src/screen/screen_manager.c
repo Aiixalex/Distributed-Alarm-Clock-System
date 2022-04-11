@@ -47,7 +47,11 @@ void Screen_destroy(void)
     OLED_text_clearDisplay();
     OLED_text_destroy();
 }
-
+void Screen_clear(void){
+    OLED_text_deactivateScroll();
+    sleep_ms(500);
+    OLED_text_clearDisplay();
+}
 void Screen_set_problem(puzzle data){
     OLED_text_clearDisplay();
     OLED_text_deactivateScroll();

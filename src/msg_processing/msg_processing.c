@@ -56,7 +56,7 @@ void process_message(char* message, struct MsgQueues *msg_queues_ptr)
         Alarm_stop_trigger_manually();
         Alarm_stopRinging();
         Clock_setDisplayType(host);
-        OLED_text_clearDisplay();
+        Screen_clear();
     }else if(strncmp(message, "submit", 6) == 0){
         // Set the Alarm
         int hour = 0;
