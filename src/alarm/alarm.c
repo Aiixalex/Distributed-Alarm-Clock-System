@@ -66,6 +66,7 @@ static void printAlarmInfo() {
 }
 
 void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK], bbgType BBGType) {
+    myBBGType = BBGType;
     WavePlayer_init();
     Clock_initialize();
     Alarm_changeTime(myHour, myMinute);
@@ -74,7 +75,6 @@ void Alarm_init(int myHour, int myMinute, bool scheduledDayOfWeek[DAYS_IN_A_WEEK
     time_t now = time(NULL);
     now_tm = localtime(&now);
     scheduled_day = now_tm->tm_mday;
-    myBBGType = BBGType;
 
     if (BBGType == host) {
         Clock_setDisplayType(hour);
