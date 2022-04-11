@@ -30,15 +30,19 @@ static void *alarmThread(void *args) {
             if ((now_tm->tm_hour >= scheduled_hour 
                 && now_tm->tm_min >= scheduled_minute) || shouldManualTrigger) {
                 WavePlayer_start();
-                
-                if ((myBBGType == host) && !shouldManualTrigger)
+
+                printf("Test: %d, %d\n", myBBGType, shouldManualTrigger);
+                if ((myBBGType == host) && !shouldManualTrigger) {
                     my_lock_signal_signal();
+                    printf("Host: signal sent!\n");
+                }
 
                 now_tm->tm_mday += 1;
                 time_t tmr = mktime(now_tm);
                 struct tm *tmr_tm = localtime(&tmr);
                 scheduled_day = tmr_tm->tm_mday;
                 printf("Alarm triggered, alarm will reactivate on day %d\n", scheduled_day);
+                shouldManualTrigger = false;
             }
         }
 
@@ -50,7 +54,7 @@ static void *alarmThread(void *args) {
 
 static void printAlarmInfo() {
     if (myBBGType == host)
-        printf("Alarm %s:\n", "host");
+        printf("Alarm(%d) %s:\n", myBBGType, "host");
     else
         printf("Alarm %s:\n", "guest");
     printf("Time set to day %d and %d:%d\n", scheduled_day, scheduled_hour, scheduled_minute);
@@ -106,12 +110,16 @@ void Alarm_clear() {
     for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
         scheduled_day_of_week[i] = 0;
     }
+    printf("-----------AlarmClear-----------\n");
     printAlarmInfo();
+    printf("----------------------\n");
 }
 
 void Alarm_changeOneDayOfTheWeek(int day) {
     scheduled_day_of_week[day] = 1;
+    printf("-----ChangeOneDay-----\n");
     printAlarmInfo();
+    printf("----------------------\n");
 }
 
 // TODO: need to double check?

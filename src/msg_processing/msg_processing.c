@@ -41,10 +41,9 @@ void process_message(char* message, struct MsgQueues *msg_queues_ptr)
                 break;
         }
         Clock_setDisplayType(guest);
-        Alarm_stopRinging();
-        
         // if correct, disable alarm for today
         // sned message to BBG 1 to disbale their alarm
+        Alarm_stop_trigger_manually();
         Alarm_stopRinging();
 
         char *myData = malloc(MAX_STRING_LENGTH);
@@ -54,6 +53,7 @@ void process_message(char* message, struct MsgQueues *msg_queues_ptr)
     else if (strcmp(message, "ANSWER_CORRECT") == 0)
     {
         printf("msg ANSWER_CORRECT recved\n");
+        Alarm_stop_trigger_manually();
         Alarm_stopRinging();
         Clock_setDisplayType(host);
         OLED_text_clearDisplay();
@@ -62,13 +62,16 @@ void process_message(char* message, struct MsgQueues *msg_queues_ptr)
         int hour = 0;
         int minute = 0;
         int day = 0;
-        int difficulty = 0;
-        sscanf(message, "submit %d:%d:%d:%d", &hour, &minute, &day, &difficulty);
+        int diff = 0;
+        int temp = 0;
+        sscanf(message, "submit %d:%d:%d:%d:%d", &temp, &hour, &minute, &day, &diff);
+        printf("Alarm set: %d:%d:%d:%d\n", hour, minute, day, diff);
         Alarm_changeTime(hour, minute);
         Alarm_changeOneDayOfTheWeek(day);
-        Puzzle_updateDiffculity(difficulty);
+        Puzzle_updateDiffculity(diff);
     }else if(strncmp(message, "remove", 6) == 0){
         // Remove the Alarm
+        printf("Alarm removed\n");
         Alarm_clear();
     }else if(strcmp(message, "trigger") == 0){
         // Send Alarm to Website

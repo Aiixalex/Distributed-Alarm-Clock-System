@@ -30,11 +30,10 @@ int main() {
 
     // default settings
     int hour = 6, minute = 27;
-    bool activeDayOfWeek[7] = {0, 0, 0, 0, 0, 0, 0};
-    Alarm_init(hour + 12, minute, activeDayOfWeek, guest);
+    bool activeDayOfWeek[7] = {0, 0, 0, 1, 0, 0, 0};
+    Alarm_init(hour + 12, minute, activeDayOfWeek, 0);
 
     while (1) {
-        Clock_setDisplayType(host);
         my_lock_signal_wait();
 
         printf("Signal received, genreating puzzle and sending to BBG2\n");
@@ -61,3 +60,4 @@ int main() {
 
     return 0;
 }
+

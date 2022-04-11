@@ -156,4 +156,5 @@ puzzle Puzzle_generate() {
 
 void Puzzle_updateDiffculity(diffculity myDiff) {
     myDiffculity = myDiff;
+    printf("Puzzle: diffculty changed to %d\n", myDiff);
 }
