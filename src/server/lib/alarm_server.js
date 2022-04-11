@@ -20,8 +20,8 @@ function handleCommand(socket) {
 	// Pased string of comamnd to relay
 	socket.on('message', function(data) {
 		// Info for connecting to the local process via UDP
-		var PORT = 12345;
-		var HOST = '127.0.0.2';
+		var PORT = 6001;
+		var HOST = '192.168.0.212'; 
 		
 		var buffer = new Buffer(data);
 		var client = dgram.createSocket('udp4');

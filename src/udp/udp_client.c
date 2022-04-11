@@ -73,6 +73,7 @@ void* UdpSendto(void* message_queue) {
         }
 
         int buf_size = sendto(sfd, message, strlen(message), 0, rp->ai_addr, rp->ai_addrlen);
+        printf("msg %s sent\n", message);
         if (buf_size == -1) {
             handle_error("sendto() failed");
         } else if (buf_size != strlen(message)) {

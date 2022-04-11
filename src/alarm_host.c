@@ -37,6 +37,8 @@ int main() {
         Clock_setDisplayType(host);
         my_lock_signal_wait();
 
+        printf("Signal received, genreating puzzle and sending to BBG2\n");
+
         // received a message which contains the problem struct from BBG 1
         Clock_setDisplayType(rectangle);
 
@@ -47,7 +49,7 @@ int main() {
         //send problem to BBG2
         char myData[MAX_STRING_LENGTH] = "";
         snprintf(myData, MAX_STRING_LENGTH - 1, "PUZZLE_ANSWER %d", currentPuzzle.answer);
-        MessageEnqueue(send_queue, myData);        
+        MessageEnqueueAndSignalClient(send_queue, myData);        
     }
 
     ShutDownUdpClient();

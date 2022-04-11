@@ -31,7 +31,7 @@ static void *alarmThread(void *args) {
                 && now_tm->tm_min >= scheduled_minute) || shouldManualTrigger) {
                 WavePlayer_start();
                 
-                if (myBBGType == host)
+                if ((myBBGType == host) && !shouldManualTrigger)
                     my_lock_signal_signal();
 
                 now_tm->tm_mday += 1;

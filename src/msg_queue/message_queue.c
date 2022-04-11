@@ -1,6 +1,7 @@
 #include <pthread.h>
 
 #include "list.h"
+#include "../udp/udp_client.h"
 
 static pthread_mutex_t message_queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -12,6 +13,12 @@ int MessageEnqueue(List* list, char* message) {
     pthread_mutex_unlock(&message_queue_mutex);
 
     return prepend_result;
+}
+
+void MessageEnqueueAndSignalClient(List* list, char* message)
+{
+    MessageEnqueue(list, message);
+    SignalUdpClient();
 }
 
 char* MessageDequeue(List* list) {

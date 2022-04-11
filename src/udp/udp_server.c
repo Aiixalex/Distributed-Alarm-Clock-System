@@ -90,6 +90,7 @@ void* UdpRecv(void* message_queue) {
         // }
 
         SignalMsgProcessing();
+        printf("Signal msg processing\n");
     }
 
     return NULL;
