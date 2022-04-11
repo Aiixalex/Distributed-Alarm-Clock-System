@@ -39,15 +39,20 @@ void Screen_init(void)
         printf("Screen init\n");
     OLED_text_init(SSD1327);
     OLED_text_clearDisplay();
+    sleep_ms(1000);
     OLED_text_setVerticalMode();
 }
 //Destroy
 void Screen_destroy(void)
 {
     OLED_text_clearDisplay();
+    sleep_ms(1000);
     OLED_text_destroy();
 }
-
+void Screen_clear(void){
+    OLED_text_deactivateScroll();
+    OLED_text_clearDisplay();
+}
 void Screen_set_problem(puzzle data){
     OLED_text_clearDisplay();
     OLED_text_deactivateScroll();

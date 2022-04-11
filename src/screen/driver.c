@@ -2,10 +2,23 @@
 #include <stdlib.h>
 // #include "OLED_text.h"
 #include "screen_manager.h"
+#include <time.h>
 
 #define CHAR_HEIGHT 8
 #define SCREEN_ROW_START 8
 #define SCREEN_ROW_END 96
+static void sleep_ms(unsigned int delayMs)
+{
+	const unsigned int NS_PER_MS = 1000 * 1000;
+	const unsigned int NS_PER_SECOND = 1000000000;
+
+	unsigned long long delayNs = delayMs * NS_PER_MS;
+	int seconds = delayNs / NS_PER_SECOND;
+	int nanoseconds = delayNs % NS_PER_SECOND;
+	struct timespec reqDelay = {seconds, nanoseconds};
+	nanosleep(&reqDelay, (struct timespec *) NULL);
+}
+
 int main(void)
 {
     // printf("Hello World\n");
@@ -53,6 +66,8 @@ int main(void)
     };
     Screen_init();
     Screen_set_problem(p);
+    sleep_ms(10000);
+    Screen_clear();
 
     return 0;
 }
