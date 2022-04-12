@@ -1,3 +1,4 @@
+// Module to genreate and validate puzzles
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

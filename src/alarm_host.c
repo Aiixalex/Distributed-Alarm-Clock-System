@@ -1,3 +1,5 @@
+// main code for the host alarm
+// will initialize everything and start all threads
 #include <stdlib.h>
 #include <stdio.h>
 #include "puzzle/puzzle.h"
@@ -60,4 +62,3 @@ int main() {
 
     return 0;
 }
-

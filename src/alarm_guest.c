@@ -1,3 +1,5 @@
+// main code for the guest alarm
+// will initialize everything and start all threads
 #include <stdlib.h>
 #include <stdio.h>
 #include "puzzle/puzzle.h"
@@ -38,9 +40,7 @@ int main() {
     List_free(send_queue, free);
     List_free(recv_queue, free);
 
-
     while (1) {
-        //TODO: the UDP module will call "my_lock_signal_signal()" to wake up main
         my_lock_signal_wait();
     }
 

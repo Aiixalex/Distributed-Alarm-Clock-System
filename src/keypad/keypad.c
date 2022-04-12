@@ -1,3 +1,4 @@
+// Module to read inputs from keypad
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

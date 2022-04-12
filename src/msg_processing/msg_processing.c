@@ -107,11 +107,6 @@ void *ReadMessage(void* msg_queues_ptr)
             continue;
         }
 
-        // int msg_size = write(STDOUT_FILENO, message, strlen(message));
-        // if(msg_size == -1) {
-        //     handle_error("Output function write() failed.");
-        // }
-
         process_message(message, msg_queues_ptr);
 
         free(message);

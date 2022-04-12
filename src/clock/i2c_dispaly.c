@@ -1,3 +1,4 @@
+// Controls the I2C 14seg display sampler
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
 #include <linux/i2c.h>

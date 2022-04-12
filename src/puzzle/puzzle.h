@@ -26,6 +26,7 @@ typedef struct puzzle {
 // ! the answer to the problem would be in abs(int(answer))
 puzzle Puzzle_generate();
 
+// change the difficulty of the puzzle
 void Puzzle_updateDiffculity(diffculity diff);
 
 // print puzzle

@@ -1,3 +1,5 @@
+// An alarm module which will ring the alarm on scheduled times
+// User can also update the settings
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -1,3 +1,4 @@
+// display time on the i2c display
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
