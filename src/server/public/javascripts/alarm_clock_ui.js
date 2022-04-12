@@ -6,6 +6,7 @@ var socket = io.connect();
 var num_alarms = 0;
 var counter_id = 0;
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
 function handleError(error_box, msg){
     $('#error-text-'+ error_box).html(msg);
     $("#error-box-"+ error_box).show();
@@ -17,39 +18,43 @@ function handleError(error_box, msg){
 $(document).ready(function() {
     $('#error-box-alarms').css('display', 'block');
     $('#error-box-alarms').hide();
-    // Get List of Alarms
-    //socket.emit("message","update");
     const clockInterval = window.setInterval(function() {
         update_clock();
     });
 	$('#hour-up').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = parseInt(time[0]);
         var min = time[1];
         var suffix = time[2];
         hour = hour + 1;
+        // wraps to hours
         if(hour >= 13){
             hour = 1;
         }
         $('#alarm-text').html(hour.toString().concat(":",min,suffix));
 	});
     $('#hour-dn').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = parseInt(time[0]);
         var min = time[1];
         var suffix = time[2];
         hour = hour - 1;
+        // wraps to hours
         if(hour <= 0){
             hour = 12;
         }
         $('#alarm-text').html(hour.toString().concat(":",min,suffix));
 	});
     $('#min-up').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = time[0];
         var min = parseInt(time[1]);
         var suffix = time[2];
         min = min + 1;
+        // wraps to minutes
         if(min >= 60){
             min = 0;
         }
@@ -60,11 +65,13 @@ $(document).ready(function() {
         $('#alarm-text').html(hour.concat(":",min_str,suffix));
 	});
     $('#min-dn').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = time[0];
         var min = parseInt(time[1]);
         var suffix = time[2];
         min = min - 1;
+        // wraps to minutes
         if(min < 0){
             min = 59;
         }
@@ -75,12 +82,14 @@ $(document).ready(function() {
         $('#alarm-text').html(hour.concat(":",min_str,suffix));
 	});
     $('#am-id').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = time[0];
         var min = time[1];
         $('#alarm-text').html(hour.concat(":",min,"am"));
 	});
     $('#pm-id').click(function(){
+        // Time [HH,MM,am/pm,D,Df]
         var time = get_time('#alarm-text');
         var hour = time[0];
         var min = time[1];
@@ -108,6 +117,7 @@ $(document).ready(function() {
     // Will remove Alarm if there is one
     $('#remove-id').click(function(){
         if(num_alarms > 0){
+            // Get the select
             var select = document.getElementById("alarm-list-id");
             var val = select.options[select.selectedIndex].value;
             select.remove(select.selectedIndex);
@@ -154,6 +164,9 @@ $(document).ready(function() {
     });
 });
     function is_same_time(hour,min,suffix, day){
+        // Check if the inputed time is the same as the selects
+        // compare is Hour, minutes and am/pm are same
+        //     and is day is different
         var select = document.getElementById("alarm-list-id");
         if(num_alarms == 0){
             return true;
@@ -206,6 +219,7 @@ $(document).ready(function() {
         var suffix = time_text[1].substring(2,4);
         var day = weekday[$('#days-id').val()];
         var diff =$('input[name="diff"]:checked').val();
+        // Time [HH,MM,am/pm,D,Df]
         return [hour,min,suffix,day,diff];
     }
     function update_clock(){

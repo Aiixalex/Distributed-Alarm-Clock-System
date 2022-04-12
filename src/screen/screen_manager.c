@@ -47,19 +47,24 @@ void Screen_destroy(void)
     OLED_text_clearDisplay();
     OLED_text_destroy();
 }
+// Clear Screen
 void Screen_clear(void){
     OLED_text_deactivateScroll();
     sleep_ms(500);
     OLED_text_clearDisplay();
 }
+// Set the problem to the screen
 void Screen_set_problem(puzzle data){
+    // Clear screen
     OLED_text_clearDisplay();
     OLED_text_deactivateScroll();
 
+    // add info to the bottom of the screen
     OLED_text_setTextXY(END_LINE-1,0);
     OLED_text_putString("Use Integer");
     OLED_text_setTextXY(END_LINE,0);
     OLED_text_putString(" Division :)");
+    // check difficulty
     switch (data.diffculityLevel){
     case 1: 
         if(DEBUG)
@@ -81,12 +86,15 @@ void Screen_set_problem(puzzle data){
             printf("Difficulty 4\n");
         set_variables(data);
         set_problem(data.problem, 2);
+        // Set location of the first math expression to be scrolled
         OLED_text_setHorizontalScrollProperties(Scroll_Left, 40,
                     47, 0, 47,
                     Scroll_2Frames);
         OLED_text_activateScroll();
+        // Stagger lines
         sleep_ms(1000);
         OLED_text_deactivateScroll();
+        // Set location of the math expression to be scrolled
         OLED_text_setHorizontalScrollProperties(Scroll_Left, 40,
             54, 0, 47,
             Scroll_2Frames);
@@ -101,6 +109,8 @@ static void set_problem(char* problem, int amt){
     OLED_text_setTextXY(HOW_TO_START_LINE,0);
     OLED_text_putString("Solve->Peace");
     int problem_i = 0;
+    // every line is a  op (a op b)
+    // except the first line which is (a op b)
     for (int i = 0; i < amt; i++){
         OLED_text_setTextXY(PROBLEM_START_LINE+i,0);
         char line[MAX_CHAR_PER_LINE + 1];
@@ -126,14 +136,16 @@ static void set_problem(char* problem, int amt){
     }
     
 }
+// Print variables on screen
 static void set_variables(puzzle problem){
+    // Prints two variables on one variable line
     OLED_text_setTextXY(VARIABLE_START_LINE,0);
     char line1[MAX_CHAR_PER_LINE+1] = "";
     strncat(line1,problem.varOne, 5);
     strncat(line1, "   ",1);
     strncat(line1, problem.varTwo, 5);
     OLED_text_putString(line1);
-
+    // Prints two variables on the next variable line 
     OLED_text_setTextXY(VARIABLE_START_LINE+1,0);
     char line2[MAX_CHAR_PER_LINE+1] = "";
     strncat(line2,problem.varThree, 5);
