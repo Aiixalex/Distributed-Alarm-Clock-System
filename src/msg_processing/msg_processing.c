@@ -140,12 +140,3 @@ void ShutDownMessageProcessing()
         handle_error_en(error_num, "pthread_join msg_processing_thread failed.");
     }
 }
-
-void CancelMessageProcessing()
-{
-    int error_num = pthread_cancel(msg_processing_thread);
-    if (error_num != 0)
-    {
-        handle_error_en(error_num, "pthread_cancel msg_processing_thread failed.");
-    }
-}
