@@ -5,7 +5,7 @@
 #include "puzzle/puzzle.h"
 #include "clock/clock.h"
 #include "alarm/alarm.h"
-#include "utility/utility.h"
+#include "utils/utils.h"
 #include "screen/screen_manager.h"
 #include "msg_queue/message_queue.h"
 #include "msg_processing/msg_processing.h"

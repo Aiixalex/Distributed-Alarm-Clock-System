@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include "clock.h"
 #include "i2c_display.h"
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 
 #define USER_ANSWER_DISPLAY_TIME_SEC 2
 

@@ -1,3 +1,5 @@
+// handle_error.h
+// Module to print error and exit
 #ifndef _HANDLE_ERROR_H_
 #define _HANDLE_ERROR_H_
 

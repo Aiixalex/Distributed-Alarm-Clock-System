@@ -12,7 +12,7 @@
 #include "../clock/clock.h"
 #include "../screen/screen_manager.h"
 #include "../alarm/alarm.h"
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 #include "../screen/OLED_text.h"
 #include "msg_processing.h"
 

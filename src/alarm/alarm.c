@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <string.h>
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 #include "../clock/clock.h"
 #include "alarm.h"
 #include "wave_player.h"

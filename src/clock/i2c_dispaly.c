@@ -10,7 +10,7 @@
 #include <pthread.h>
 
 #include "i2c_display.h"
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 
 #define I2C_DEVICE_ADDRESS 0x20
 #define REG_DIRA 0x00

@@ -5,7 +5,7 @@
 #include "puzzle/puzzle.h"
 #include "keypad/keypad.h"
 #include "alarm/alarm.h"
-#include "utility/utility.h"
+#include "utils/utils.h"
 #include "msg_queue/message_queue.h"
 #include "udp/udp_client.h"
 #include "udp/udp_server.h"

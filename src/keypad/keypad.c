@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 #include "keypad.h"
 
 #define GPIO_BASE_DIR "/sys/class/gpio"

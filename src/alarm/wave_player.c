@@ -1,6 +1,6 @@
 // wave player implementation
 #include "audioMixer.h"
-#include "../utility/utility.h"
+#include "../utils/utils.h"
 #include "wave_player.h"
 #include <stdio.h>
 #include <pthread.h>
