@@ -81,14 +81,6 @@ void* UdpRecv(void* message_queue) {
             fprintf(stderr, "message enqueue failed: %s", message);
         }
 
-        // if (strcmp(message, "!\n") == 0) {
-        //     SignalMsgProcessing();
-        //     CancelInputReader();
-        //     CancelUdpClient();
-        //     close(sfd);
-        //     return NULL;
-        // }
-
         SignalMsgProcessing();
         printf("Signal msg processing\n");
     }
@@ -112,9 +104,3 @@ void ShutDownUdpServer() {
     }
 }
 
-void CancelUdpServer() {
-    int error_num = pthread_cancel(udp_server_thread);
-    if (error_num != 0) {
-        handle_error_en(error_num, "pthread_cancel udp_server_thread failed.");
-    }
-}

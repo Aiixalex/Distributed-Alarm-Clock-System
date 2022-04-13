@@ -81,12 +81,6 @@ void* UdpSendto(void* message_queue) {
             exit(EXIT_FAILURE);
         }
 
-        // if (strcmp(message, "!\n") == 0) {
-        //     free(message);
-        //     close(sfd);
-        //     return NULL;
-        // }
-
         free(message);
     }
 
@@ -117,10 +111,3 @@ void ShutDownUdpClient() {
         handle_error_en(error_num, "pthread_join udp_client_thread failed.");
     }
 }
-
-// void CancelUdpClient() {
-//     int error_num = pthread_cancel(udp_client_thread);
-//     if (error_num != 0) {
-//         handle_error_en(error_num, "pthread_cancel udp_client_thread failed.");
-//     }
-// }
