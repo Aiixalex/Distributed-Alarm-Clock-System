@@ -4,5 +4,5 @@ A distributed embedded alarm-clock system which use RPG like interactive games t
 ## Hardware
 
  - 2 speakers
- - screen
- - joystock(controller)
+ - OLED Displayscreen
+ - 12-key keypad
